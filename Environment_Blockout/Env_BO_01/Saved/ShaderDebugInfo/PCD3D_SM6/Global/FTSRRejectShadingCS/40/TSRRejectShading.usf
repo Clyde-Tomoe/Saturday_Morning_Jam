@@ -1,0 +1,1901 @@
+#line 1 "MoveShaderParametersToRootConstantBuffer"
+cbuffer _RootShaderParameters
+{
+uint2 InputInfo_ViewportMin : packoffset(c2);
+uint2 InputInfo_ViewportMax : packoffset(c2.z);
+float4 InputPixelPosToScreenPos : packoffset(c15);
+float4 InputPixelPosToTranslucencyTextureUV : packoffset(c19);
+float2 TranslucencyTextureUVMin : packoffset(c20);
+float2 TranslucencyTextureUVMax : packoffset(c20.z);
+float4x4 ClipToResurrectionClip : packoffset(c21);
+float TheoricBlendFactor : packoffset(c26);
+uint TileOverscan : packoffset(c26.y);
+float PerceptionAdd : packoffset(c26.z);
+uint bEnableResurrection : packoffset(c26.w);
+uint bEnableFlickeringHeuristic : packoffset(c27);
+}
+
+#line 1 "__UE_FILENAME_SENTINEL__"
+SamplerState D3DStaticBilinearClampedSampler    : register(s3, space1000);
+float min3(float a, float b, float c)
+{
+	return min(a, min(b, c));
+}
+int min3(int a, int b, int c)
+{
+	return min(a, min(b, c));
+}
+uint min3(uint a, uint b, uint c)
+{
+	return min(a, min(b, c));
+}
+float2 min3 ( float2 a, float2 b, float2 c) { return float2( min3 (a.x , b.x , c.x ), min3 (a.y , b.y , c.y )); }
+float3 min3 ( float3 a, float3 b, float3 c) { return float3( min3 (a.xy, b.xy, c.xy), min3 (a.z , b.z , c.z )); }
+float4 min3 ( float4 a, float4 b, float4 c) { return float4( min3 (a.xy, b.xy, c.xy), min3 (a.zw, b.zw, c.zw)); }
+int2 min3 ( int2 a, int2 b, int2 c) { return int2( min3 (a.x , b.x , c.x ), min3 (a.y , b.y , c.y )); }
+int3 min3 ( int3 a, int3 b, int3 c) { return int3( min3 (a.xy, b.xy, c.xy), min3 (a.z , b.z , c.z )); }
+int4 min3 ( int4 a, int4 b, int4 c) { return int4( min3 (a.xy, b.xy, c.xy), min3 (a.zw, b.zw, c.zw)); }
+uint2 min3 ( uint2 a, uint2 b, uint2 c) { return uint2( min3 (a.x , b.x , c.x ), min3 (a.y , b.y , c.y )); }
+uint3 min3 ( uint3 a, uint3 b, uint3 c) { return uint3( min3 (a.xy, b.xy, c.xy), min3 (a.z , b.z , c.z )); }
+uint4 min3 ( uint4 a, uint4 b, uint4 c) { return uint4( min3 (a.xy, b.xy, c.xy), min3 (a.zw, b.zw, c.zw)); }
+float max3(float a, float b, float c)
+{
+	return max(a, max(b, c));
+}
+int max3(int a, int b, int c)
+{
+	return max(a, max(b, c));
+}
+uint max3(uint a, uint b, uint c)
+{
+	return max(a, max(b, c));
+}
+float2 max3 ( float2 a, float2 b, float2 c) { return float2( max3 (a.x , b.x , c.x ), max3 (a.y , b.y , c.y )); }
+float3 max3 ( float3 a, float3 b, float3 c) { return float3( max3 (a.xy, b.xy, c.xy), max3 (a.z , b.z , c.z )); }
+float4 max3 ( float4 a, float4 b, float4 c) { return float4( max3 (a.xy, b.xy, c.xy), max3 (a.zw, b.zw, c.zw)); }
+int2 max3 ( int2 a, int2 b, int2 c) { return int2( max3 (a.x , b.x , c.x ), max3 (a.y , b.y , c.y )); }
+int3 max3 ( int3 a, int3 b, int3 c) { return int3( max3 (a.xy, b.xy, c.xy), max3 (a.z , b.z , c.z )); }
+int4 max3 ( int4 a, int4 b, int4 c) { return int4( max3 (a.xy, b.xy, c.xy), max3 (a.zw, b.zw, c.zw)); }
+uint2 max3 ( uint2 a, uint2 b, uint2 c) { return uint2( max3 (a.x , b.x , c.x ), max3 (a.y , b.y , c.y )); }
+uint3 max3 ( uint3 a, uint3 b, uint3 c) { return uint3( max3 (a.xy, b.xy, c.xy), max3 (a.z , b.z , c.z )); }
+uint4 max3 ( uint4 a, uint4 b, uint4 c) { return uint4( max3 (a.xy, b.xy, c.xy), max3 (a.zw, b.zw, c.zw)); }
+bool select_internal(bool    c, bool a, bool b) { return bool (c   ? a.x : b.x); }
+bool2 select_internal(bool    c, bool a, bool2 b) { return bool2(c   ? a   : b.x, c   ? a   : b.y); }
+bool2 select_internal(bool    c, bool2 a, bool b) { return bool2(c   ? a.x : b  , c   ? a.y : b  ); }
+bool2 select_internal(bool    c, bool2 a, bool2 b) { return bool2(c   ? a.x : b.x, c   ? a.y : b.y); }
+bool2 select_internal(bool2   c, bool a, bool b) { return bool2(c.x ? a   : b  , c.y ? a   : b  ); }
+bool2 select_internal(bool2   c, bool a, bool2 b) { return bool2(c.x ? a   : b.x, c.y ? a   : b.y); }
+bool2 select_internal(bool2   c, bool2 a, bool b) { return bool2(c.x ? a.x : b  , c.y ? a.y : b  ); }
+bool2 select_internal(bool2   c, bool2 a, bool2 b) { return bool2(c.x ? a.x : b.x, c.y ? a.y : b.y); }
+bool3 select_internal(bool    c, bool a, bool3 b) { return bool3(c   ? a   : b.x, c   ? a   : b.y, c   ? a   : b.z); }
+bool3 select_internal(bool    c, bool3 a, bool b) { return bool3(c   ? a.x : b  , c   ? a.y : b  , c   ? a.z : b  ); }
+bool3 select_internal(bool    c, bool3 a, bool3 b) { return bool3(c   ? a.x : b.x, c   ? a.y : b.y, c   ? a.z : b.z); }
+bool3 select_internal(bool3   c, bool a, bool b) { return bool3(c.x ? a   : b  , c.y ? a   : b  , c.z ? a   : b  ); }
+bool3 select_internal(bool3   c, bool a, bool3 b) { return bool3(c.x ? a   : b.x, c.y ? a   : b.y, c.z ? a   : b.z); }
+bool3 select_internal(bool3   c, bool3 a, bool b) { return bool3(c.x ? a.x : b  , c.y ? a.y : b  , c.z ? a.z : b  ); }
+bool3 select_internal(bool3   c, bool3 a, bool3 b) { return bool3(c.x ? a.x : b.x, c.y ? a.y : b.y, c.z ? a.z : b.z); }
+bool4 select_internal(bool    c, bool a, bool4 b) { return bool4(c   ? a   : b.x, c   ? a   : b.y, c   ? a   : b.z, c   ? a   : b.w); }
+bool4 select_internal(bool    c, bool4 a, bool b) { return bool4(c   ? a.x : b  , c   ? a.y : b  , c   ? a.z : b  , c   ? a.w : b  ); }
+bool4 select_internal(bool    c, bool4 a, bool4 b) { return bool4(c   ? a.x : b.x, c   ? a.y : b.y, c   ? a.z : b.z, c   ? a.w : b.w); }
+bool4 select_internal(bool4   c, bool a, bool b) { return bool4(c.x ? a   : b  , c.y ? a   : b  , c.z ? a   : b  , c.w ? a   : b  ); }
+bool4 select_internal(bool4   c, bool a, bool4 b) { return bool4(c.x ? a   : b.x, c.y ? a   : b.y, c.z ? a   : b.z, c.w ? a   : b.w); }
+bool4 select_internal(bool4   c, bool4 a, bool b) { return bool4(c.x ? a.x : b  , c.y ? a.y : b  , c.z ? a.z : b  , c.w ? a.w : b  ); }
+bool4 select_internal(bool4   c, bool4 a, bool4 b) { return bool4(c.x ? a.x : b.x, c.y ? a.y : b.y, c.z ? a.z : b.z, c.w ? a.w : b.w); }
+int select_internal(bool    c, int a, int b) { return int (c   ? a.x : b.x); }
+int2 select_internal(bool    c, int a, int2 b) { return int2(c   ? a   : b.x, c   ? a   : b.y); }
+int2 select_internal(bool    c, int2 a, int b) { return int2(c   ? a.x : b  , c   ? a.y : b  ); }
+int2 select_internal(bool    c, int2 a, int2 b) { return int2(c   ? a.x : b.x, c   ? a.y : b.y); }
+int2 select_internal(bool2   c, int a, int b) { return int2(c.x ? a   : b  , c.y ? a   : b  ); }
+int2 select_internal(bool2   c, int a, int2 b) { return int2(c.x ? a   : b.x, c.y ? a   : b.y); }
+int2 select_internal(bool2   c, int2 a, int b) { return int2(c.x ? a.x : b  , c.y ? a.y : b  ); }
+int2 select_internal(bool2   c, int2 a, int2 b) { return int2(c.x ? a.x : b.x, c.y ? a.y : b.y); }
+int3 select_internal(bool    c, int a, int3 b) { return int3(c   ? a   : b.x, c   ? a   : b.y, c   ? a   : b.z); }
+int3 select_internal(bool    c, int3 a, int b) { return int3(c   ? a.x : b  , c   ? a.y : b  , c   ? a.z : b  ); }
+int3 select_internal(bool    c, int3 a, int3 b) { return int3(c   ? a.x : b.x, c   ? a.y : b.y, c   ? a.z : b.z); }
+int3 select_internal(bool3   c, int a, int b) { return int3(c.x ? a   : b  , c.y ? a   : b  , c.z ? a   : b  ); }
+int3 select_internal(bool3   c, int a, int3 b) { return int3(c.x ? a   : b.x, c.y ? a   : b.y, c.z ? a   : b.z); }
+int3 select_internal(bool3   c, int3 a, int b) { return int3(c.x ? a.x : b  , c.y ? a.y : b  , c.z ? a.z : b  ); }
+int3 select_internal(bool3   c, int3 a, int3 b) { return int3(c.x ? a.x : b.x, c.y ? a.y : b.y, c.z ? a.z : b.z); }
+int4 select_internal(bool    c, int a, int4 b) { return int4(c   ? a   : b.x, c   ? a   : b.y, c   ? a   : b.z, c   ? a   : b.w); }
+int4 select_internal(bool    c, int4 a, int b) { return int4(c   ? a.x : b  , c   ? a.y : b  , c   ? a.z : b  , c   ? a.w : b  ); }
+int4 select_internal(bool    c, int4 a, int4 b) { return int4(c   ? a.x : b.x, c   ? a.y : b.y, c   ? a.z : b.z, c   ? a.w : b.w); }
+int4 select_internal(bool4   c, int a, int b) { return int4(c.x ? a   : b  , c.y ? a   : b  , c.z ? a   : b  , c.w ? a   : b  ); }
+int4 select_internal(bool4   c, int a, int4 b) { return int4(c.x ? a   : b.x, c.y ? a   : b.y, c.z ? a   : b.z, c.w ? a   : b.w); }
+int4 select_internal(bool4   c, int4 a, int b) { return int4(c.x ? a.x : b  , c.y ? a.y : b  , c.z ? a.z : b  , c.w ? a.w : b  ); }
+int4 select_internal(bool4   c, int4 a, int4 b) { return int4(c.x ? a.x : b.x, c.y ? a.y : b.y, c.z ? a.z : b.z, c.w ? a.w : b.w); }
+float select_internal(bool    c, float a, float b) { return float (c   ? a.x : b.x); }
+float2 select_internal(bool    c, float a, float2 b) { return float2(c   ? a   : b.x, c   ? a   : b.y); }
+float2 select_internal(bool    c, float2 a, float b) { return float2(c   ? a.x : b  , c   ? a.y : b  ); }
+float2 select_internal(bool    c, float2 a, float2 b) { return float2(c   ? a.x : b.x, c   ? a.y : b.y); }
+float2 select_internal(bool2   c, float a, float b) { return float2(c.x ? a   : b  , c.y ? a   : b  ); }
+float2 select_internal(bool2   c, float a, float2 b) { return float2(c.x ? a   : b.x, c.y ? a   : b.y); }
+float2 select_internal(bool2   c, float2 a, float b) { return float2(c.x ? a.x : b  , c.y ? a.y : b  ); }
+float2 select_internal(bool2   c, float2 a, float2 b) { return float2(c.x ? a.x : b.x, c.y ? a.y : b.y); }
+float3 select_internal(bool    c, float a, float3 b) { return float3(c   ? a   : b.x, c   ? a   : b.y, c   ? a   : b.z); }
+float3 select_internal(bool    c, float3 a, float b) { return float3(c   ? a.x : b  , c   ? a.y : b  , c   ? a.z : b  ); }
+float3 select_internal(bool    c, float3 a, float3 b) { return float3(c   ? a.x : b.x, c   ? a.y : b.y, c   ? a.z : b.z); }
+float3 select_internal(bool3   c, float a, float b) { return float3(c.x ? a   : b  , c.y ? a   : b  , c.z ? a   : b  ); }
+float3 select_internal(bool3   c, float a, float3 b) { return float3(c.x ? a   : b.x, c.y ? a   : b.y, c.z ? a   : b.z); }
+float3 select_internal(bool3   c, float3 a, float b) { return float3(c.x ? a.x : b  , c.y ? a.y : b  , c.z ? a.z : b  ); }
+float3 select_internal(bool3   c, float3 a, float3 b) { return float3(c.x ? a.x : b.x, c.y ? a.y : b.y, c.z ? a.z : b.z); }
+float4 select_internal(bool    c, float a, float4 b) { return float4(c   ? a   : b.x, c   ? a   : b.y, c   ? a   : b.z, c   ? a   : b.w); }
+float4 select_internal(bool    c, float4 a, float b) { return float4(c   ? a.x : b  , c   ? a.y : b  , c   ? a.z : b  , c   ? a.w : b  ); }
+float4 select_internal(bool    c, float4 a, float4 b) { return float4(c   ? a.x : b.x, c   ? a.y : b.y, c   ? a.z : b.z, c   ? a.w : b.w); }
+float4 select_internal(bool4   c, float a, float b) { return float4(c.x ? a   : b  , c.y ? a   : b  , c.z ? a   : b  , c.w ? a   : b  ); }
+float4 select_internal(bool4   c, float a, float4 b) { return float4(c.x ? a   : b.x, c.y ? a   : b.y, c.z ? a   : b.z, c.w ? a   : b.w); }
+float4 select_internal(bool4   c, float4 a, float b) { return float4(c.x ? a.x : b  , c.y ? a.y : b  , c.z ? a.z : b  , c.w ? a.w : b  ); }
+float4 select_internal(bool4   c, float4 a, float4 b) { return float4(c.x ? a.x : b.x, c.y ? a.y : b.y, c.z ? a.z : b.z, c.w ? a.w : b.w); }
+bool  and_internal(bool  a, bool  b) { return bool(a && b); }
+bool2 and_internal(bool2 a, bool2 b) { return bool2(a.x && b.x, a.y && b.y); }
+bool3 and_internal(bool3 a, bool3 b) { return bool3(a.x && b.x, a.y && b.y, a.z && b.z); }
+bool4 and_internal(bool4 a, bool4 b) { return bool4(a.x && b.x, a.y && b.y, a.z && b.z, a.w && b.w); }
+bool  or_internal(bool  a, bool  b) { return bool(a || b); }
+bool2 or_internal(bool2 a, bool2 b) { return bool2(a.x || b.x, a.y || b.y); }
+bool3 or_internal(bool3 a, bool3 b) { return bool3(a.x || b.x, a.y || b.y, a.z || b.z); }
+bool4 or_internal(bool4 a, bool4 b) { return bool4(a.x || b.x, a.y || b.y, a.z || b.z, a.w || b.w); }
+const static float MaxHalfFloat = 65504.0f;
+const static float Max10BitsFloat = 64512.0f;
+struct FDFMatrix
+{
+	float4x4 M;
+	float3 PostTranslation; 
+};
+struct FDFInverseMatrix
+{
+	float4x4 M;
+	float3 PreTranslation; 
+};
+FDFMatrix WaveReadLaneAt(FDFMatrix In, uint SrcIndex)
+{
+	FDFMatrix Result;
+	Result.M[0] = WaveReadLaneAt(In.M[0], SrcIndex);
+	Result.M[1] = WaveReadLaneAt(In.M[1], SrcIndex);
+	Result.M[2] = WaveReadLaneAt(In.M[2], SrcIndex);
+	Result.M[3] = WaveReadLaneAt(In.M[3], SrcIndex);
+	Result.PostTranslation = WaveReadLaneAt(In.PostTranslation, SrcIndex);
+	return Result;
+}
+FDFInverseMatrix WaveReadLaneAt(FDFInverseMatrix In, uint SrcIndex)
+{
+	FDFInverseMatrix Result;
+	Result.M[0] = WaveReadLaneAt(In.M[0], SrcIndex);
+	Result.M[1] = WaveReadLaneAt(In.M[1], SrcIndex);
+	Result.M[2] = WaveReadLaneAt(In.M[2], SrcIndex);
+	Result.M[3] = WaveReadLaneAt(In.M[3], SrcIndex);
+	Result.PreTranslation = WaveReadLaneAt(In.PreTranslation, SrcIndex);
+	return Result;
+}
+struct FLWCMatrix
+{
+	float4x4 M;
+	float3 Tile; 
+};
+struct FLWCInverseMatrix
+{
+	float4x4 M;
+	float3 Tile; 
+};
+FLWCMatrix WaveReadLaneAt(FLWCMatrix In, uint SrcIndex)
+{
+	FLWCMatrix Result;
+	Result.M[0] = WaveReadLaneAt(In.M[0], SrcIndex);
+	Result.M[1] = WaveReadLaneAt(In.M[1], SrcIndex);
+	Result.M[2] = WaveReadLaneAt(In.M[2], SrcIndex);
+	Result.M[3] = WaveReadLaneAt(In.M[3], SrcIndex);
+	Result.Tile = WaveReadLaneAt(In.Tile, SrcIndex);
+	return Result;
+}
+FLWCInverseMatrix WaveReadLaneAt(FLWCInverseMatrix In, uint SrcIndex)
+{
+	FLWCInverseMatrix Result;
+	Result.M[0] = WaveReadLaneAt(In.M[0], SrcIndex);
+	Result.M[1] = WaveReadLaneAt(In.M[1], SrcIndex);
+	Result.M[2] = WaveReadLaneAt(In.M[2], SrcIndex);
+	Result.M[3] = WaveReadLaneAt(In.M[3], SrcIndex);
+	Result.Tile = WaveReadLaneAt(In.Tile, SrcIndex);
+	return Result;
+}
+float4 EncodeVelocityToTexture(float3 V, bool bHasPixelAnimation)
+{
+		V.xy = sign(V.xy) * sqrt(abs(V.xy)) * (2.0 / sqrt(2.0));
+	float4 EncodedV;
+	EncodedV.xy = V.xy * (0.499f * 0.5f) + 32767.0f / 65535.0f;
+		uint Vz = asuint(V.z);
+		EncodedV.z = saturate(float((Vz >> 16) & 0xFFFF) * rcp(65535.0f) + (0.1 / 65535.0f));
+		EncodedV.w = saturate(float(((Vz >>  0) & 0xFFFE) | uint(bHasPixelAnimation)) * rcp(65535.0f) + (0.1 / 65535.0f));
+	return EncodedV;
+}
+float4 EncodeVelocityToTexture(float3 V)
+{
+	return EncodeVelocityToTexture(V,  false);
+}
+float2 ApplyScreenTransform(float2 PInA, float4 AToB)
+{
+	return PInA * AToB.xy + AToB.zw;
+}
+float2x2 dpv_mul(  float2x2 a,   float2x2 b) { 		return    float2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+float2x2 dpv_mul(  float2x2 a,   float2  b) { 		return    float2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+float2x2 dpv_mul(  float2  a,   float2x2 b) { 		return    float2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+float3x2 dpv_mul(  float3x2 a,   float3x2 b) { 		return    float3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+float3x2 dpv_mul(  float3x2 a,   float3  b) { 		return    float3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+float3x2 dpv_mul(  float3  a,   float3x2 b) { 		return    float3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+float4x2 dpv_mul(  float4x2 a,   float4x2 b) { 		return    float4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+float4x2 dpv_mul(  float4x2 a,   float4  b) { 		return    float4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+float4x2 dpv_mul(  float4  a,   float4x2 b) { 		return    float4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+uint2x2 dpv_mul(  uint2x2 a,   uint2x2 b) { 		return    uint2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+uint2x2 dpv_mul(  uint2x2 a,   uint2  b) { 		return    uint2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+uint2x2 dpv_mul(  uint2  a,   uint2x2 b) { 		return    uint2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+int2x2 dpv_mul(  int2x2 a,   int2x2 b) { 		return    int2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+int2x2 dpv_mul(  int2x2 a,   int2  b) { 		return    int2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+int2x2 dpv_mul(  int2  a,   int2x2 b) { 		return    int2x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]) ); 	}
+uint3x2 dpv_mul(  uint3x2 a,   uint3x2 b) { 		return    uint3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+uint3x2 dpv_mul(  uint3x2 a,   uint3  b) { 		return    uint3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+uint3x2 dpv_mul(  uint3  a,   uint3x2 b) { 		return    uint3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+int3x2 dpv_mul(  int3x2 a,   int3x2 b) { 		return    int3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+int3x2 dpv_mul(  int3x2 a,   int3  b) { 		return    int3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+int3x2 dpv_mul(  int3  a,   int3x2 b) { 		return    int3x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]) ); 	}
+uint4x2 dpv_mul(  uint4x2 a,   uint4x2 b) { 		return    uint4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+uint4x2 dpv_mul(  uint4x2 a,   uint4  b) { 		return    uint4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+uint4x2 dpv_mul(  uint4  a,   uint4x2 b) { 		return    uint4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+int4x2 dpv_mul(  int4x2 a,   int4x2 b) { 		return    int4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+int4x2 dpv_mul(  int4x2 a,   int4  b) { 		return    int4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+int4x2 dpv_mul(  int4  a,   int4x2 b) { 		return    int4x2(    ( a [ 0 ] *  b [ 0 ]),  ( a [ 1 ] *  b [ 1 ]),  ( a [ 2 ] *  b [ 2 ]),  ( a [ 3 ] *  b [ 3 ]) ); 	}
+float2x2 dpv_add(  float2x2 a,   float2x2 b) { 		return    float2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+float2x2 dpv_add(  float2x2 a,   float2  b) { 		return    float2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+float2x2 dpv_add(  float2  a,   float2x2 b) { 		return    float2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+float3x2 dpv_add(  float3x2 a,   float3x2 b) { 		return    float3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+float3x2 dpv_add(  float3x2 a,   float3  b) { 		return    float3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+float3x2 dpv_add(  float3  a,   float3x2 b) { 		return    float3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+float4x2 dpv_add(  float4x2 a,   float4x2 b) { 		return    float4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+float4x2 dpv_add(  float4x2 a,   float4  b) { 		return    float4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+float4x2 dpv_add(  float4  a,   float4x2 b) { 		return    float4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+uint2x2 dpv_add(  uint2x2 a,   uint2x2 b) { 		return    uint2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+uint2x2 dpv_add(  uint2x2 a,   uint2  b) { 		return    uint2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+uint2x2 dpv_add(  uint2  a,   uint2x2 b) { 		return    uint2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+int2x2 dpv_add(  int2x2 a,   int2x2 b) { 		return    int2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+int2x2 dpv_add(  int2x2 a,   int2  b) { 		return    int2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+int2x2 dpv_add(  int2  a,   int2x2 b) { 		return    int2x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]) ); 	}
+uint3x2 dpv_add(  uint3x2 a,   uint3x2 b) { 		return    uint3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+uint3x2 dpv_add(  uint3x2 a,   uint3  b) { 		return    uint3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+uint3x2 dpv_add(  uint3  a,   uint3x2 b) { 		return    uint3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+int3x2 dpv_add(  int3x2 a,   int3x2 b) { 		return    int3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+int3x2 dpv_add(  int3x2 a,   int3  b) { 		return    int3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+int3x2 dpv_add(  int3  a,   int3x2 b) { 		return    int3x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]) ); 	}
+uint4x2 dpv_add(  uint4x2 a,   uint4x2 b) { 		return    uint4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+uint4x2 dpv_add(  uint4x2 a,   uint4  b) { 		return    uint4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+uint4x2 dpv_add(  uint4  a,   uint4x2 b) { 		return    uint4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+int4x2 dpv_add(  int4x2 a,   int4x2 b) { 		return    int4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+int4x2 dpv_add(  int4x2 a,   int4  b) { 		return    int4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+int4x2 dpv_add(  int4  a,   int4x2 b) { 		return    int4x2(    ( a [ 0 ] +  b [ 0 ]),  ( a [ 1 ] +  b [ 1 ]),  ( a [ 2 ] +  b [ 2 ]),  ( a [ 3 ] +  b [ 3 ]) ); 	}
+struct FWaveBroadcastSettings
+{
+	uint Operation;
+	uint SourceLaneIndex;
+	uint GroupThreadIndex;
+	uint SwizzleAnd;
+	uint SwizzleOr;
+	uint SwizzleXor;
+	int Rotate;
+	uint RotateFixMask;
+};
+uint GetWaveBroadcastSourceLaneIndex(const FWaveBroadcastSettings Settings, uint DestLaneIndex)
+{
+	if (0)
+	{
+		 return DestLaneIndex;
+	}
+	else if (Settings.Operation == 1)
+	{
+		return Settings.SourceLaneIndex;
+	}
+	else if (Settings.Operation == 2)
+	{
+		return Settings.SourceLaneIndex;
+	}
+	else if (Settings.Operation == 3)
+	{
+		return (((DestLaneIndex & Settings.SwizzleAnd) | Settings.SwizzleOr) ^ Settings.SwizzleXor) % 32;
+	}
+	else if (Settings.Operation == 4)
+	{
+		return (Settings.RotateFixMask & DestLaneIndex) | ((~Settings.RotateFixMask) & uint(DestLaneIndex + Settings.Rotate));
+	}
+	return DestLaneIndex;
+}
+uint WaveBroadcast(const FWaveBroadcastSettings Settings, uint x)
+{
+	if (0)
+	{
+		 return x;
+	}
+	else if (Settings.Operation == 1)
+	{
+		{
+			return WaveReadLaneAt(x, Settings.SourceLaneIndex);
+		}
+	}
+	else if (Settings.Operation == 3)
+	{
+		{
+			return WaveReadLaneAt(x, GetWaveBroadcastSourceLaneIndex(Settings, WaveGetLaneIndex()));
+		}
+	}
+	else if (Settings.Operation == 4)
+	{
+		{
+			return WaveReadLaneAt(x, GetWaveBroadcastSourceLaneIndex(Settings, WaveGetLaneIndex()));
+		}
+	}
+	return x;
+}
+uint2 WaveBroadcast(const FWaveBroadcastSettings Settings, uint2 v)
+{
+	return uint2(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y));
+}
+uint3 WaveBroadcast(const FWaveBroadcastSettings Settings, uint3 v)
+{
+	return uint3(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y),
+		WaveBroadcast(Settings, v.z));
+}
+uint4 WaveBroadcast(const FWaveBroadcastSettings Settings, uint4 v)
+{
+	return uint4(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y),
+		WaveBroadcast(Settings, v.z),
+		WaveBroadcast(Settings, v.w));
+}
+int WaveBroadcast(const FWaveBroadcastSettings Settings, int x)
+{
+	return asint(WaveBroadcast(Settings, asuint(x)));
+}
+int2 WaveBroadcast(const FWaveBroadcastSettings Settings, int2 v)
+{
+	return int2(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y));
+}
+int3 WaveBroadcast(const FWaveBroadcastSettings Settings, int3 v)
+{
+	return int3(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y),
+		WaveBroadcast(Settings, v.z));
+}
+int4 WaveBroadcast(const FWaveBroadcastSettings Settings, int4 v)
+{
+	return int4(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y),
+		WaveBroadcast(Settings, v.z),
+		WaveBroadcast(Settings, v.w));
+}
+float WaveBroadcast(const FWaveBroadcastSettings Settings, float x)
+{
+	return asfloat(WaveBroadcast(Settings, asuint(x)));
+}
+float2 WaveBroadcast(const FWaveBroadcastSettings Settings, float2 v)
+{
+	return float2(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y));
+}
+float3 WaveBroadcast(const FWaveBroadcastSettings Settings, float3 v)
+{
+	return float3(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y),
+		WaveBroadcast(Settings, v.z));
+}
+float4 WaveBroadcast(const FWaveBroadcastSettings Settings, float4 v)
+{
+	return float4(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y),
+		WaveBroadcast(Settings, v.z),
+		WaveBroadcast(Settings, v.w));
+}
+bool WaveBroadcast(const FWaveBroadcastSettings Settings, bool x)
+{
+	return bool(WaveBroadcast(Settings, uint(x)));
+}
+bool2 WaveBroadcast(const FWaveBroadcastSettings Settings, bool2 v)
+{
+	return bool2(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y));
+}
+bool3 WaveBroadcast(const FWaveBroadcastSettings Settings, bool3 v)
+{
+	return bool3(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y),
+		WaveBroadcast(Settings, v.z));
+}
+bool4 WaveBroadcast(const FWaveBroadcastSettings Settings, bool4 v)
+{
+	return bool4(
+		WaveBroadcast(Settings, v.x),
+		WaveBroadcast(Settings, v.y),
+		WaveBroadcast(Settings, v.z),
+		WaveBroadcast(Settings, v.w));
+}
+FWaveBroadcastSettings InitWaveRotateLaneGroup(const uint LaneGroupSize, const int LaneRotation)
+{
+	FWaveBroadcastSettings Settings;
+	Settings.Operation     = 4;
+	Settings.Rotate        = LaneRotation;
+	Settings.RotateFixMask = ~(LaneGroupSize - 1);
+	return Settings;
+}
+#pragma warning(error: 3206)
+static const float LargestNormalNumber = float(65504.0);
+static const float4 LargestSceneColorRGBA = (LargestNormalNumber * float(0.25)).xxxx;
+static const float kMoireLumaToChannel = float(3.0);
+                             
+                             
+                                
+float2x2 ApplyScreenTransform(float2x2 PInA, float4 AToB)
+{
+	return dpv_add(dpv_mul(PInA, AToB.xy), AToB.zw);
+}
+float SafeRcp(float x)
+{
+	return x > 0.0 ? rcp(x) : 0.0;
+}
+float2 SafeRcp(float2 x)
+{
+	return float2(SafeRcp(x.x), SafeRcp(x.y));
+}
+float MeasureBackbufferLDRQuantizationError()
+{
+	return float(0.5 / 1024.0);
+}
+static uint GGroupThreadIndex = 0;
+bool not(bool x)
+{
+	return !x;
+}
+bool2 not(bool2 x)
+{
+	return !x;
+}
+bool3 not(bool3 x)
+{
+	return !x;
+}
+bool4 not(bool4 x)
+{
+	return !x;
+}
+void PackVectorToDwords(uint V, out uint DW[1])
+{
+	DW[0] = V;
+}
+void PackVectorToDwords(uint2 V, out uint DW[2])
+{
+	DW[0] = V.x;
+	DW[1] = V.y;
+}
+void PackVectorToDwords(uint3 V, out uint DW[3])
+{
+	DW[0] = V.x;
+	DW[1] = V.y;
+	DW[2] = V.z;
+}
+void PackVectorToDwords(uint4 V, out uint DW[4])
+{
+	DW[0] = V.x;
+	DW[1] = V.y;
+	DW[2] = V.z;
+	DW[3] = V.w;
+}
+void UnpackDwordsToVector(uint DW[1], out uint V)
+{
+	V   = DW[0];
+}
+void UnpackDwordsToVector(uint DW[2], out uint2 V)
+{
+	V.x = DW[0];
+	V.y = DW[1];
+}
+void UnpackDwordsToVector(uint DW[3], out uint3 V)
+{
+	V.x = DW[0];
+	V.y = DW[1];
+	V.z = DW[2];
+}
+void UnpackDwordsToVector(uint DW[4], out uint4 V)
+{
+	V.x = DW[0];
+	V.y = DW[1];
+	V.z = DW[2];
+	V.w = DW[3];
+}
+void PackVectorToDwords(float V, out uint DW[1])
+{
+	DW[0] = asuint(V);
+}
+void PackVectorToDwords(float2 V, out uint DW[2])
+{
+	DW[0] = asuint(V.x);
+	DW[1] = asuint(V.y);
+}
+void PackVectorToDwords(float3 V, out uint DW[3])
+{
+	DW[0] = asuint(V.x);
+	DW[1] = asuint(V.y);
+	DW[2] = asuint(V.z);
+}
+void PackVectorToDwords(float4 V, out uint DW[4])
+{
+	DW[0] = asuint(V.x);
+	DW[1] = asuint(V.y);
+	DW[2] = asuint(V.z);
+	DW[3] = asuint(V.w);
+}
+void UnpackDwordsToVector(uint DW[1], out float V)
+{
+	V   = asfloat(DW[0]);
+}
+void UnpackDwordsToVector(uint DW[2], out float2 V)
+{
+	V.x = asfloat(DW[0]);
+	V.y = asfloat(DW[1]);
+}
+void UnpackDwordsToVector(uint DW[3], out float3 V)
+{
+	V.x = asfloat(DW[0]);
+	V.y = asfloat(DW[1]);
+	V.z = asfloat(DW[2]);
+}
+void UnpackDwordsToVector(uint DW[4], out float4 V)
+{
+	V.x = asfloat(DW[0]);
+	V.y = asfloat(DW[1]);
+	V.z = asfloat(DW[2]);
+	V.w = asfloat(DW[3]);
+}
+groupshared uint SharedData[((2 * 1) * (32 / 1) * (32 / 2)) * 4];
+void WriteDwordToLDS(const uint SharedIndex, uint V)
+{
+	SharedData[SharedIndex] = V;
+}
+uint ReadDwordFromLDS(const uint SharedIndex)
+{
+	return SharedData[SharedIndex];
+}
+void AtomicIncrementLDSDword(const uint SharedIndex, uint V)
+{
+	InterlockedAdd( SharedData[SharedIndex], V);
+}
+template<typename ScalarType, uint VectorSize>
+void WriteVectorToLDS(const uint SharedIndex, vector<ScalarType, VectorSize> V)
+{
+	uint DW[ (uint( uint(sizeof( ScalarType ) * uint( VectorSize )) + 3u) / 4u)];
+	PackVectorToDwords(V,  DW);
+	[unroll]
+	for (uint i = 0; i <  (uint( uint(sizeof( ScalarType ) * uint( VectorSize )) + 3u) / 4u); i++)
+	{
+		SharedData[SharedIndex + i * ((2 * 1) * (32 / 1) * (32 / 2))] = DW[i];
+	}
+}
+template<typename ScalarType, uint VectorSize>
+void ReadVectorFromLDS(const uint SharedIndex, out vector<ScalarType, VectorSize> V)
+{
+	uint DW[ (uint( uint(sizeof( ScalarType ) * uint( VectorSize )) + 3u) / 4u)];
+	[unroll]
+	for (uint i = 0; i <  (uint( uint(sizeof( ScalarType ) * uint( VectorSize )) + 3u) / 4u); i++)
+	{
+		DW[i] = SharedData[SharedIndex + i * ((2 * 1) * (32 / 1) * (32 / 2))];
+	}
+	UnpackDwordsToVector(DW,  V);
+}
+template<typename ScalarType, uint InVectorSize, uint InElementCount>
+struct FRegisters_AoS_VectorArray
+{
+	static const uint VectorSize = InVectorSize;
+	static const uint ElementCount = InElementCount;
+	static const uint RegisterRowSize = VectorSize;
+	static const uint RegisterRowCount = ElementCount;
+	vector<ScalarType, VectorSize> Array[ElementCount];
+	 
+	vector<ScalarType, RegisterRowSize> GetRegisterRow(const uint RegisterRowIndex)
+	{
+		return Array[RegisterRowIndex];
+	}
+	 
+	void SetRegisterRow(const uint RegisterRowIndex, vector<ScalarType, RegisterRowSize> RegisterRow)
+	{
+		Array[RegisterRowIndex] = RegisterRow;
+	}
+	 
+	vector<ScalarType, VectorSize> GetElement(const uint ElementIndex)
+	{
+		return Array[ElementIndex];
+	}
+	 
+	void SetElement(const uint ElementIndex, vector<ScalarType, VectorSize> Element)
+	{
+		Array[ElementIndex] = Element;
+	}
+	vector<ScalarType, VectorSize> WaveBroadcastElement(const FWaveBroadcastSettings BroadcastSettings, const uint ElementIndex)
+	{
+		return WaveBroadcast(BroadcastSettings, GetElement(ElementIndex));
+	}
+	 
+	ScalarType GetElementComponent(const uint ElementIndex, const uint ComponentIndex)
+	{
+		return Array[ElementIndex][ComponentIndex];
+	}
+	 
+	void SetElementComponent(const uint ElementIndex, const uint ComponentIndex, ScalarType Component)
+	{
+		Array[ElementIndex][ComponentIndex] = Component;
+	}
+};
+template<typename ScalarType, uint InVectorSize, uint InSimdSizeX, uint InSimdSizeY>
+struct TLaneVector2D
+{
+	static const uint VectorSize = InVectorSize;
+	static const uint SimdSize = InSimdSizeX * InSimdSizeY;
+	static const uint SimdSizeX = InSimdSizeX;
+	static const uint SimdSizeY = InSimdSizeY;
+	static const uint RegisterRowSize  = FRegisters_AoS_VectorArray<ScalarType, InVectorSize, InSimdSizeX * InSimdSizeY>::RegisterRowSize;
+	static const uint RegisterRowCount = FRegisters_AoS_VectorArray<ScalarType, InVectorSize, InSimdSizeX * InSimdSizeY>::RegisterRowCount;
+	FRegisters_AoS_VectorArray<ScalarType, InVectorSize, InSimdSizeX * InSimdSizeY> Registers;
+	 
+	vector<ScalarType, VectorSize> GetElement(const uint ElementIndex)
+	{
+		return Registers.GetElement(ElementIndex);
+	}
+	 
+	void SetElement(const uint ElementIndex, vector<ScalarType, VectorSize> Element)
+	{
+		Registers.SetElement(ElementIndex, Element);
+	}
+	 
+	void SetAllElements(vector<ScalarType, VectorSize> Element)
+	{
+		[unroll]
+		for (uint ElementIndex = 0; ElementIndex < SimdSize; ElementIndex++)
+		{
+			Registers.SetElement(ElementIndex, Element);
+		}
+	}
+	 
+	TLaneVector2D<ScalarType, 1, SimdSizeX, SimdSizeY> GetComponent(const uint ComponentIndex)
+	{
+		TLaneVector2D<ScalarType, 1, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint ElementIndex = 0; ElementIndex < SimdSize; ElementIndex++)
+		{
+			R.SetElement(ElementIndex, Registers.GetElementComponent(ElementIndex, ComponentIndex));
+		}
+		return R;
+	}
+	 
+	void SetComponent(uint ComponentIndex, TLaneVector2D<ScalarType, 1, SimdSizeX, SimdSizeY> Comp)
+	{
+		[unroll]
+		for (uint ElementIndex = 0; ElementIndex < SimdSize; ElementIndex++)
+		{
+			Registers.SetElementComponent(ElementIndex, ComponentIndex, Comp.GetElement(ElementIndex));
+		}
+	}
+	 
+	TLaneVector2D<ScalarType, 1, SimdSizeX, SimdSizeY> operator [](const uint ComponentIndex)
+	{
+		return GetComponent(ComponentIndex);
+	}
+	 
+	static TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> Vectorize(
+		TLaneVector2D<ScalarType, 1, SimdSizeX, SimdSizeY> A)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint ElementIndex = 0; ElementIndex < SimdSize; ElementIndex++)
+		{
+			R.SetElement(ElementIndex, A.GetElement(ElementIndex));
+		}
+		return R;
+	}
+	 
+	static TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> Const(
+		vector<ScalarType, VectorSize> A)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint ElementIndex = 0; ElementIndex < SimdSize; ElementIndex++)
+		{
+			R.SetElement(ElementIndex, A);
+		}
+		return R;
+	}
+	 
+	template<typename SourceScalarType>
+	static TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> CastFrom(
+		TLaneVector2D<SourceScalarType, 1, SimdSizeX, SimdSizeY> A)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint ElementIndex = 0; ElementIndex < SimdSize; ElementIndex++)
+		{
+			R.SetElement(ElementIndex, vector<ScalarType, VectorSize>(A.GetElement(ElementIndex)));
+		}
+		return R;
+	}
+	 
+	void TightenRegisters()
+	{
+	}
+	 
+	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> operator + (TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, Registers.GetRegisterRow(RegisterRowIndex) + B.Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+	 
+	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> operator + (vector<ScalarType, VectorSize> B)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> BV;
+		BV.SetAllElements(B);
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, Registers.GetRegisterRow(RegisterRowIndex) + BV.Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+	 
+	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> operator - ()
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, -Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+	 
+	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> operator - (TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, Registers.GetRegisterRow(RegisterRowIndex) - B.Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+	 
+	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> operator - (vector<ScalarType, VectorSize> B)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> BV;
+		BV.SetAllElements(B);
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, Registers.GetRegisterRow(RegisterRowIndex) - BV.Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+	 
+	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> operator * (TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, Registers.GetRegisterRow(RegisterRowIndex) * B.Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+	 
+	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> operator * (vector<ScalarType, VectorSize> B)
+	{
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> BV;
+		BV.SetAllElements(B);
+		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, Registers.GetRegisterRow(RegisterRowIndex) * BV.Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+	 
+	TLaneVector2D<bool, VectorSize, SimdSizeX, SimdSizeY> operator > (TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B)
+	{
+		TLaneVector2D<bool, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, Registers.GetRegisterRow(RegisterRowIndex) > B.Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+	 
+	TLaneVector2D<bool, VectorSize, SimdSizeX, SimdSizeY> operator < (TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B)
+	{
+		TLaneVector2D<bool, VectorSize, SimdSizeX, SimdSizeY> R;
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, Registers.GetRegisterRow(RegisterRowIndex) < B.Registers.GetRegisterRow(RegisterRowIndex));
+		}
+		return R;
+	}
+};
+template<uint DestVectorSize, typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY>
+TLaneVector2D<ScalarType, DestVectorSize, SimdSizeX, SimdSizeY> ResizeChannels(
+	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A)
+{
+	TLaneVector2D<ScalarType, DestVectorSize, SimdSizeX, SimdSizeY> R;
+	R.SetAllElements(ScalarType(0));
+	[unroll]
+	for (uint ElementIndex = 0; ElementIndex < SimdSizeX * SimdSizeY; ElementIndex++)
+	{
+		[unroll]
+		for (uint ComponentIndex = 0; ComponentIndex < min(VectorSize, DestVectorSize); ComponentIndex++)
+		{
+			R.Registers.SetElementComponent(ElementIndex, ComponentIndex, A.Registers.GetElementComponent(ElementIndex, ComponentIndex));
+		}
+	}
+	return R;
+}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> rcp ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A) 	{ 		TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, rcp (A.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> saturate ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A) 	{ 		TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, saturate (A.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> abs ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A) 	{ 		TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, abs (A.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D< bool , VectorSize, SimdSizeX, SimdSizeY> not ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A) 	{ 		TLaneVector2D< bool , VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, not (A.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> min ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B) 	{ 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, min (A.Registers.GetRegisterRow(RegisterRowIndex), B.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> max ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B) 	{ 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, max (A.Registers.GetRegisterRow(RegisterRowIndex), B.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> and_internal ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B) 	{ 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, and_internal (A.Registers.GetRegisterRow(RegisterRowIndex), B.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> or_internal ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B) 	{ 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, or_internal (A.Registers.GetRegisterRow(RegisterRowIndex), B.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, 1 , SimdSizeX, SimdSizeY> dot ( 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B) 	{ 		TLaneVector2D<ScalarType, 1 , SimdSizeX, SimdSizeY> R; 		[unroll] for (uint ElementIndex = 0; ElementIndex < SimdSizeX * SimdSizeY; ElementIndex++) { 			R.SetElement(ElementIndex, dot (A.GetElement(ElementIndex), B.GetElement(ElementIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> select_internal ( 		TLaneVector2D< bool , VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> C) 	{ 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, select_internal (A.Registers.GetRegisterRow(RegisterRowIndex), B.Registers.GetRegisterRow(RegisterRowIndex), C.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> clamp ( 		TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> C) 	{ 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, clamp (A.Registers.GetRegisterRow(RegisterRowIndex), B.Registers.GetRegisterRow(RegisterRowIndex), C.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> min3 ( 		TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> C) 	{ 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, min3 (A.Registers.GetRegisterRow(RegisterRowIndex), B.Registers.GetRegisterRow(RegisterRowIndex), C.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<typename ScalarType, uint VectorSize, uint SimdSizeX, uint SimdSizeY> 	TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> max3 ( 		TLaneVector2D< ScalarType , VectorSize, SimdSizeX, SimdSizeY> A, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> B, 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> C) 	{ 		TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY> R; 		[unroll] for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, SimdSizeX, SimdSizeY>::RegisterRowCount; RegisterRowIndex++) { 			R.Registers.SetRegisterRow(RegisterRowIndex, max3 (A.Registers.GetRegisterRow(RegisterRowIndex), B.Registers.GetRegisterRow(RegisterRowIndex), C.Registers.GetRegisterRow(RegisterRowIndex))); 		} 		return R; 	}
+template<uint VectorSize, uint SimdSizeX, uint SimdSizeY>
+bool AnyComponent(TLaneVector2D<bool, VectorSize, SimdSizeX, SimdSizeY> A)
+{
+	bool R = any(A.GetElement(0));
+	[unroll] for (uint SimdIndex = 1; SimdIndex < SimdSizeX * SimdSizeY; SimdIndex++) { R = R || any(A.GetElement(SimdIndex)); }
+	return R;
+}
+template<uint LaneStrideX, uint LaneStrideY>
+int2 GetSimdIndexPixelCoordinateInLane(const uint SimdIndex)
+{
+	return int2(SimdIndex % LaneStrideX, SimdIndex / LaneStrideX);
+}
+int2 GetElementPixelPosInLane(const uint LaneStrideX, const uint LaneStrideY, const uint ElementIndex)
+{
+	return int2(ElementIndex % LaneStrideX, ElementIndex / LaneStrideX);
+}
+int2 GetElementPixelOffsetInTile(const uint LaneStrideX, const uint LaneStrideY, const uint LaneIndex, const uint SimdIndex)
+{
+	return (
+		int2(LaneIndex % uint((32 / 1) * 1), LaneIndex / uint((32 / 1) * 1)) * int2(LaneStrideX, LaneStrideY) +
+		GetElementPixelPosInLane(LaneStrideX, LaneStrideY, SimdIndex)
+	);
+}
+int2 ComputeElementInputPixelPos(
+	const uint2 LaneStride,
+	const uint2 TileOverscan,
+	const uint2 PixelViewportMin,
+	const uint2 PixelViewportMax,
+	const uint2 GroupId,
+	const uint  GroupThreadIndex,
+	const uint  InputElementIndex,
+	const int2  InputDataOffset = int2(0, 0),
+	const uint  InputResDivisor = 1)
+{
+	const uint2 TileSize = uint2(LaneStride.x * 1 * (32 / 1), LaneStride.y * (32 / 2) * 1);
+	const uint2 TileStride = uint2(TileSize - 2 * TileOverscan);
+	int2 InputPixelOffsetMin = int2(PixelViewportMin / InputResDivisor);
+	int2 InputPixelOffsetMax = int2((PixelViewportMax + (InputResDivisor - 1)) / InputResDivisor - 1);
+	int2 InputTileOffset = int2(TileStride / InputResDivisor) * int2(GroupId) - int2(TileOverscan / InputResDivisor);
+	int2 InputPixelOffsetInTile = GetElementPixelOffsetInTile(
+		LaneStride.x / InputResDivisor,
+		LaneStride.y / InputResDivisor,
+		GroupThreadIndex,
+		InputElementIndex);
+	return  clamp( InputPixelOffsetMin + InputTileOffset + InputPixelOffsetInTile , InputPixelOffsetMin , InputPixelOffsetMax );
+}
+int2 ComputeElementOutputPixelPos(
+	const uint2 LaneStride,
+	const uint2 TileOverscan,
+	const uint2 PixelViewportMin,
+	const uint2 PixelViewportMax,
+	const uint2 GroupId,
+	const uint  GroupThreadIndex,
+	const uint  OutputElementIndex,
+	const int2  OutputDataOffset = int2(0, 0),
+	const uint  OutputResDivisor = 1,
+	const bool  bDebugDisablePadding = false)
+{
+	const uint2 TileSize = uint2(LaneStride.x * 1 * (32 / 1), LaneStride.y * (32 / 2) * 1);
+	const uint2 TileStride = bDebugDisablePadding ? TileSize : uint2(TileSize - 2 * TileOverscan);
+	int2 OutputPixelOffsetMin = int2(PixelViewportMin / OutputResDivisor);
+	int2 OutputPixelOffsetMax = int2((PixelViewportMax + (OutputResDivisor - 1)) / OutputResDivisor);
+	const uint2 DataMinInTile = TileOverscan - uint2(OutputDataOffset);
+	const uint2 DataMaxInTile = TileSize - uint2(OutputDataOffset) - TileOverscan;
+	int2 OutputTileOffset = int2(TileStride / OutputResDivisor) * int2(GroupId) - int2((bDebugDisablePadding ? 0u : TileOverscan) / OutputResDivisor);
+	int2 OutputPixelOffsetInTile = GetElementPixelOffsetInTile(
+		LaneStride.x / OutputResDivisor,
+		LaneStride.y / OutputResDivisor,
+		GroupThreadIndex,
+		OutputElementIndex);
+	int2 OutputPixelOffsetInOutputTexture = OutputPixelOffsetMin + OutputTileOffset + OutputPixelOffsetInTile;
+	bool2 bIsWithinOutputViewport = OutputPixelOffsetInOutputTexture < OutputPixelOffsetMax;
+	bool2 bIsNotPadding =  or_internal( bDebugDisablePadding.xx ,  and_internal( OutputPixelOffsetInTile * int(OutputResDivisor) >= int2(DataMinInTile) , OutputPixelOffsetInTile * int(OutputResDivisor) <  int2(DataMaxInTile) ) );
+	bool2 bIsValid =  and_internal( bIsNotPadding , bIsWithinOutputViewport );
+	OutputPixelOffsetInOutputTexture =  select_internal( bIsValid , OutputPixelOffsetInOutputTexture , ~int(0).xx );
+	return OutputPixelOffsetInOutputTexture;
+}
+template<uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<bool, 1, LaneStrideX, LaneStrideY> IsValidTilePixel(const uint2 TileOverscan)
+{
+	const uint2 TileSize = uint2(LaneStrideX * 1 * (32 / 1), LaneStrideY * (32 / 2) * 1);
+	TLaneVector2D<bool, 1, LaneStrideX, LaneStrideY> bIsValidTilePixel;
+	[unroll]
+	for (uint ElementIndex = 0; ElementIndex < LaneStrideX * LaneStrideY; ElementIndex++)
+	{
+		int2 PixelOffsetInTile = GetElementPixelOffsetInTile(
+			LaneStrideX,
+			LaneStrideY,
+			GGroupThreadIndex,
+			ElementIndex);
+		bool2 bIsNotPadding =  and_internal( PixelOffsetInTile >= int2(TileOverscan) , PixelOffsetInTile <  int2(TileSize - TileOverscan) );
+		bIsValidTilePixel.SetElement(ElementIndex, all(bIsNotPadding));
+	}
+	return bIsValidTilePixel;
+}
+bool AnyThread(bool X)
+{
+	const uint SharedIndex = 0;
+	GroupMemoryBarrierWithGroupSync();
+	if (GGroupThreadIndex == 0)
+	{
+		WriteDwordToLDS(SharedIndex, 0);
+	}
+	GroupMemoryBarrierWithGroupSync();
+	AtomicIncrementLDSDword(SharedIndex,  select_internal( X , 1u , 0u ));
+	GroupMemoryBarrierWithGroupSync();
+	return ReadDwordFromLDS(SharedIndex) > 0;
+}
+template<uint LaneStrideX, uint LaneStrideY>
+uint GetNeighborElementIndex(const uint ElementIndex, const int2 Offset)
+{
+	const uint2 ElementPixelCoord = uint2(GetSimdIndexPixelCoordinateInLane<LaneStrideX, LaneStrideY>(ElementIndex));
+	const uint2 NeigborElementPixelCoord = (ElementPixelCoord + uint2(Offset)) % uint2(LaneStrideX, LaneStrideY);
+	const uint NeigborElementIndex = dot(NeigborElementPixelCoord, uint2(1, LaneStrideX));
+	return NeigborElementIndex;
+}
+template<uint LaneStrideX, uint LaneStrideY>
+FWaveBroadcastSettings GetWaveBroadcastSettingsForNeighbor(const uint ElementIndex, const int2 Offset)
+{
+	const uint2 ElementPixelCoord = uint2(GetSimdIndexPixelCoordinateInLane<LaneStrideX, LaneStrideY>(ElementIndex));
+	const bool2 bNeedsLaneRotation = (ElementPixelCoord + uint2(Offset)) >= uint2(LaneStrideX, LaneStrideY);
+	const int LaneRotation = dot( select_internal( bNeedsLaneRotation , int2(Offset) , 0 ), int2(1, (32 / 1)));
+	return InitWaveRotateLaneGroup( ((32 / 1) * 1), LaneRotation);
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+vector<ScalarType, VectorSize> WaveAccessNeighborElement(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center,
+	const uint ElementIndex,
+	const int2 Offset)
+{
+	const uint NeigborElementIndex = GetNeighborElementIndex<LaneStrideX, LaneStrideY>(ElementIndex, Offset);
+	const FWaveBroadcastSettings BroadcastSettings = GetWaveBroadcastSettingsForNeighbor<LaneStrideX, LaneStrideY>(ElementIndex, Offset);
+	vector<ScalarType, VectorSize> ReturnSimdElement;
+	if (BroadcastSettings.Rotate != 0)
+	{
+		ReturnSimdElement = Center.Registers.WaveBroadcastElement(BroadcastSettings, NeigborElementIndex);
+	}
+	else
+	{
+		ReturnSimdElement = Center.GetElement(NeigborElementIndex);
+	}
+	return ReturnSimdElement;
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> WaveAccessNeighborTexel(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center,
+	const int2 Offset)
+{
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Return;
+	[unroll]
+	for (uint ElementIndex = 0; ElementIndex < LaneStrideX * LaneStrideY; ElementIndex++)
+	{
+		Return.SetElement(ElementIndex, WaveAccessNeighborElement(Center, ElementIndex, Offset));
+	}
+	Return.TightenRegisters();
+	return Return;
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+void AccessNeighborTexels3x1(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CO,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CP,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CN)
+{
+	CP = WaveAccessNeighborTexel(CO, int2(1, 0));
+	CN = WaveAccessNeighborTexel(CO, int2(-1, 0));
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+void Write1x3CenterToLDS(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CO)
+{
+	const uint TotalNumberOfLaneInGroup = (32 / 1) * (1 * (32 / 2));
+	GroupMemoryBarrierWithGroupSync();
+	if (LaneStrideY == 1)
+	{
+		[unroll]
+		for (uint ElementIndex = 0; ElementIndex < LaneStrideX; ElementIndex++)
+		{
+			WriteVectorToLDS<ScalarType, VectorSize>(GGroupThreadIndex + ElementIndex * TotalNumberOfLaneInGroup, CO.GetElement(ElementIndex));
+		}
+	}
+	else
+	{
+		const uint FirstElementIndex = 0;
+		const uint LastElementIndex = LaneStrideX * LaneStrideY - LaneStrideX;
+		[unroll]
+		for (uint ElementIndex = 0; ElementIndex < LaneStrideX; ElementIndex++)
+		{
+			WriteVectorToLDS<ScalarType, VectorSize>(GGroupThreadIndex + (0 + ElementIndex) * TotalNumberOfLaneInGroup, CO.GetElement(FirstElementIndex + ElementIndex));
+			WriteVectorToLDS<ScalarType, VectorSize>(GGroupThreadIndex + (LaneStrideX + ElementIndex) * TotalNumberOfLaneInGroup, CO.GetElement(LastElementIndex + ElementIndex));
+		}
+	}
+	GroupMemoryBarrierWithGroupSync();
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+void Read1x3NeighborElementsFromLDS(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CO,
+	const uint ElementIndex,
+	out vector<ScalarType, VectorSize> CP,
+	out vector<ScalarType, VectorSize> CN)
+{
+	const uint TotalNumberOfLaneInGroup = (32 / 1) * (1 * (32 / 2));
+	if (LaneStrideY == 1)
+	{
+		ReadVectorFromLDS<ScalarType, VectorSize>(((GGroupThreadIndex - (32 / 1) * 1) % TotalNumberOfLaneInGroup) + ElementIndex * TotalNumberOfLaneInGroup,  CN);
+		ReadVectorFromLDS<ScalarType, VectorSize>(((GGroupThreadIndex + (32 / 1) * 1) % TotalNumberOfLaneInGroup) + ElementIndex * TotalNumberOfLaneInGroup,  CP);
+	}
+	else 
+	{
+		if (ElementIndex < LaneStrideX)
+		{
+			ReadVectorFromLDS<ScalarType, VectorSize>(((GGroupThreadIndex - (32 / 1) * 1) % TotalNumberOfLaneInGroup) + (LaneStrideX + ElementIndex) * TotalNumberOfLaneInGroup,  CN);
+		}
+		else
+		{
+			CN = CO.GetElement(ElementIndex - LaneStrideX);
+		}
+		const uint LastElementIndex = LaneStrideX * LaneStrideY - LaneStrideX;
+		if (ElementIndex >= LastElementIndex)
+		{
+			ReadVectorFromLDS<ScalarType, VectorSize>(((GGroupThreadIndex + (32 / 1) * 1) % TotalNumberOfLaneInGroup) + (0 + ElementIndex - LastElementIndex) * TotalNumberOfLaneInGroup,  CP);
+		}
+		else
+		{
+			CP = CO.GetElement(ElementIndex + LaneStrideX);
+		}
+	}
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+void Read1x3CenterFromLDS(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CO,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CP,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CN)
+{
+	[unroll]
+	for (uint ElementIndex = 0; ElementIndex < LaneStrideX * LaneStrideY; ElementIndex++)
+	{
+		vector<ScalarType, VectorSize> CPElement;
+		vector<ScalarType, VectorSize> CNElement;
+		Read1x3NeighborElementsFromLDS(CO, ElementIndex,  CPElement,  CNElement);
+		CP.SetElement(ElementIndex, CPElement);
+		CN.SetElement(ElementIndex, CNElement);
+	}
+	CP.TightenRegisters();
+	CN.TightenRegisters();
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+void AccessNeighborTexels1x3(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CO,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CP,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CN)
+{
+	Write1x3CenterToLDS(CO);
+	Read1x3CenterFromLDS(CO,  CP,  CN);
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY, typename ConvolutionSinkType>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Convolve1x3Then3x1FromLDS(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> C, ConvolutionSinkType ConvolutionSink)
+{
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> VO;
+	{
+		TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CO = C;
+		TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CP;
+		TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CN;
+		Read1x3CenterFromLDS(CO,  CP,  CN);
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::RegisterRowCount; RegisterRowIndex++)
+		{
+			VO.Registers.SetRegisterRow(RegisterRowIndex, ConvolutionSink.ConvolveRegisterRows1x3(CN.Registers.GetRegisterRow(RegisterRowIndex), CO.Registers.GetRegisterRow(RegisterRowIndex), CP.Registers.GetRegisterRow(RegisterRowIndex)));
+		}
+	}
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> R;
+	{
+		TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CO = VO;
+		TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CP;
+		TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CN;
+		AccessNeighborTexels3x1(CO,  CP,  CN);
+		[unroll]
+		for (uint RegisterRowIndex = 0; RegisterRowIndex < TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::RegisterRowCount; RegisterRowIndex++)
+		{
+			R.Registers.SetRegisterRow(RegisterRowIndex, ConvolutionSink.ConvolveRegisterRows3x1(CN.Registers.GetRegisterRow(RegisterRowIndex), CO.Registers.GetRegisterRow(RegisterRowIndex), CP.Registers.GetRegisterRow(RegisterRowIndex)));
+		}
+	}
+	return R;
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY, typename ConvolutionSinkType>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Convolve1x3Then3x1(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center, ConvolutionSinkType ConvolutionSink)
+{
+	Write1x3CenterToLDS(Center);
+	return Convolve1x3Then3x1FromLDS(Center, ConvolutionSink);
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> WeightedSum3x3(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center, float3 HorizontalWeights, float3 VerticalWeights)
+{
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CO = Center;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CP;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> CN;
+	AccessNeighborTexels1x3(CO,  CP,  CN);
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> BO = (
+		CO * TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::Const(ScalarType(VerticalWeights.y)) +
+		CP * TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::Const(ScalarType(VerticalWeights.z)) +
+		CN * TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::Const(ScalarType(VerticalWeights.x)));
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> BP;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> BN;
+	AccessNeighborTexels3x1(BO,  BP,  BN);
+	return (
+		BO * TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::Const(ScalarType(HorizontalWeights.y)) +
+		BP * TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::Const(ScalarType(HorizontalWeights.z)) +
+		BN * TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::Const(ScalarType(HorizontalWeights.x)));
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Sum3x3(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center)
+{
+	return WeightedSum3x3(Center,  float(1.0).xxx,  float(1.0).xxx);
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> WeightedAvg3x3(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center, float3 NormalizedWeights)
+{
+	return WeightedSum3x3(Center,  NormalizedWeights,  NormalizedWeights);
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Blur3x3(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center)
+{
+	return WeightedAvg3x3(Center,  float3(0.25, 0.5, 0.25));
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> TotalVariation3x3(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center)
+{
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Sum = WeightedSum3x3(Center,  float(1.0).xxx,  float3(0.125, 0.125, 0.125));
+	return TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY>::Const(1.125) * Center - Sum;
+}
+template<typename ScalarType, uint VectorSize, uint InSimdSizeX, uint InSimdSizeY>
+struct TConvolutionSinkMin
+{
+	static const uint RegisterRowSize = TLaneVector2D<ScalarType, VectorSize, InSimdSizeX, InSimdSizeY>::RegisterRowSize;
+	uint Unused;
+	vector<ScalarType, VectorSize> ConvolveElements3x1(vector<ScalarType, VectorSize> N, vector<ScalarType, VectorSize> C, vector<ScalarType, VectorSize> P)
+	{
+		return min3(N, C, P);
+	}
+	vector<ScalarType, VectorSize> ConvolveElements1x3(vector<ScalarType, VectorSize> N, vector<ScalarType, VectorSize> C, vector<ScalarType, VectorSize> P)
+	{
+		return min3(N, C, P);
+	}
+	vector<ScalarType, RegisterRowSize> ConvolveRegisterRows3x1(vector<ScalarType, RegisterRowSize> N, vector<ScalarType, RegisterRowSize> C, vector<ScalarType, RegisterRowSize> P)
+	{
+		return min3(N, C, P);
+	}
+	vector<ScalarType, RegisterRowSize> ConvolveRegisterRows1x3(vector<ScalarType, RegisterRowSize> N, vector<ScalarType, RegisterRowSize> C, vector<ScalarType, RegisterRowSize> P)
+	{
+		return min3(N, C, P);
+	}
+};
+template<typename ScalarType, uint VectorSize, uint InSimdSizeX, uint InSimdSizeY>
+struct TConvolutionSinkMax
+{
+	static const uint RegisterRowSize = TLaneVector2D<ScalarType, VectorSize, InSimdSizeX, InSimdSizeY>::RegisterRowSize;
+	uint Unused;
+	vector<ScalarType, VectorSize> ConvolveElements3x1(vector<ScalarType, VectorSize> N, vector<ScalarType, VectorSize> C, vector<ScalarType, VectorSize> P)
+	{
+		return max3(N, C, P);
+	}
+	vector<ScalarType, VectorSize> ConvolveElements1x3(vector<ScalarType, VectorSize> N, vector<ScalarType, VectorSize> C, vector<ScalarType, VectorSize> P)
+	{
+		return max3(N, C, P);
+	}
+	vector<ScalarType, RegisterRowSize> ConvolveRegisterRows3x1(vector<ScalarType, RegisterRowSize> N, vector<ScalarType, RegisterRowSize> C, vector<ScalarType, RegisterRowSize> P)
+	{
+		return max3(N, C, P);
+	}
+	vector<ScalarType, RegisterRowSize> ConvolveRegisterRows1x3(vector<ScalarType, RegisterRowSize> N, vector<ScalarType, RegisterRowSize> C, vector<ScalarType, RegisterRowSize> P)
+	{
+		return max3(N, C, P);
+	}
+};
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Min3x3(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center)
+{
+	TConvolutionSinkMin<ScalarType, VectorSize, LaneStrideX, LaneStrideY> MinSink = {0};
+	return Convolve1x3Then3x1(Center, MinSink);
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Max3x3(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center)
+{
+	TConvolutionSinkMax<ScalarType, VectorSize, LaneStrideX, LaneStrideY> MaxSink = {0};
+	return Convolve1x3Then3x1(Center, MaxSink);
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+void MinMax3x3(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> OutMin,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> OutMax)
+{
+	TConvolutionSinkMin<ScalarType, VectorSize, LaneStrideX, LaneStrideY> MinSink = {0};
+	TConvolutionSinkMax<ScalarType, VectorSize, LaneStrideX, LaneStrideY> MaxSink = {0};
+	Write1x3CenterToLDS(Center);
+	OutMin = Convolve1x3Then3x1FromLDS(Center, MinSink);
+	OutMax = Convolve1x3Then3x1FromLDS(Center, MaxSink);
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> MaxMinusMin3x3(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center)
+{
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> BoxMin;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> BoxMax;
+	MinMax3x3(Center,  BoxMin,  BoxMax);
+	return BoxMax - BoxMin;
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Clamp3x3(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> ToClamp,
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> BoundaryCenter)
+{
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> BoundaryMin;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> BoundaryMax;
+	MinMax3x3(BoundaryCenter,  BoundaryMin,  BoundaryMax);
+	return  clamp( ToClamp , BoundaryMin , BoundaryMax );
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> AnnihilateToGuide3x3(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> ToClamp,
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Guide)
+{
+	return Clamp3x3(ToClamp, Clamp3x3(Guide, ToClamp));
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+void AnnihilateMutually3x3(
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Input,
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> History,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> AnnihilatedInput,
+	out TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> AnnihilatedHistory)
+{
+	AnnihilatedInput   = AnnihilateToGuide3x3(Input  ,  History);
+	AnnihilatedHistory = AnnihilateToGuide3x3(History,  Input);
+}
+template<typename FSampleType>
+void LMHOperator(FSampleType A, FSampleType B, FSampleType C, out FSampleType L, out FSampleType M, out FSampleType H)
+{
+	FSampleType X = min(B, C);
+	FSampleType Y = max(B, C);
+	L = min(A, X);
+	FSampleType Z = max(A, X);
+	M = min(Z, Y);
+	H = max(Z, Y);
+}
+template<typename FSampleType>
+FSampleType Median(FSampleType A, FSampleType B, FSampleType C)
+{
+	FSampleType L, M, H;
+	LMHOperator(A, B, C, L, M, H);
+	return M;
+}
+template<typename ScalarType, uint VectorSize, uint LaneStrideX, uint LaneStrideY>
+TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Median3x3(TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> Center)
+{
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> C0 = Center;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> C1;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> C2;
+	AccessNeighborTexels1x3(C0,  C1,  C2);
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0L0;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0M0;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0H0;
+	LMHOperator(C0, C1, C2, M0L0, M0M0, M0H0);
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0L1;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0L2;
+	AccessNeighborTexels3x1(M0L0,  M0L1,  M0L2);
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0M1;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0M2;
+	AccessNeighborTexels3x1(M0M0,  M0M1,  M0M2);
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0H1;
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M0H2;
+	AccessNeighborTexels3x1(M0H0,  M0H1,  M0H2);
+	TLaneVector2D<ScalarType, VectorSize, LaneStrideX, LaneStrideY> M1[3];
+	M1[0] = max3(M0L0, M0L1, M0L2);
+	M1[1] = Median(M0M0, M0M1, M0M2);
+	M1[2] = min3(M0H0, M0H1, M0H2);
+	return Median(M1[0], M1[1], M1[2]);
+}
+static const float kHistoryGuidePreceptionAdd = 1.0;
+static const float FilteringWeight = rcp(float(1.0 + 4 * 0.5 + 4 * 0.25));
+                    
+TLaneVector2D<float, 4, 1, 2>  ComposeTranslucency(TLaneVector2D<float, 4, 1, 2>  Color, TLaneVector2D<float, 4, 1, 2>  Translucency)
+{
+	TLaneVector2D<float, 4, 1, 2>  ComposedColor;
+	ComposedColor = Color * TLaneVector2D<float, 4, 1, 2> ::Vectorize(Translucency[3]) + ResizeChannels<4>(Translucency);
+		ComposedColor.SetComponent(3, Color[3] * Translucency[3]);
+		ComposedColor = min(ComposedColor, TLaneVector2D<float, 4, 1, 2> ::Const(LargestSceneColorRGBA));
+	return ComposedColor;
+}
+TLaneVector2D<float, 4, 1, 2>  ComposeTranslucencyForRejection(TLaneVector2D<float, 4, 1, 2>  OriginalOpaqueInput, TLaneVector2D<float, 4, 1, 2>  OriginalTranslucencyInput, TLaneVector2D<bool, 1, 1, 2>  bHasPixelAnimation)
+{
+	TLaneVector2D<float, 4, 1, 2>  SharpInput = OriginalOpaqueInput;
+	TLaneVector2D<float, 4, 1, 2>  BlurInput = OriginalTranslucencyInput;
+	{
+		TLaneVector2D<float, 4, 1, 2>  CenterFinalSceneColor = ComposeTranslucency(OriginalOpaqueInput, OriginalTranslucencyInput);
+		TLaneVector2D<float, 4, 1, 2>  HasAnimationBlurInput = ResizeChannels<4>(CenterFinalSceneColor);
+		BlurInput  =  select_internal( TLaneVector2D<bool, 4, 1, 2> ::Vectorize(bHasPixelAnimation) , HasAnimationBlurInput , BlurInput );
+		SharpInput =  select_internal( TLaneVector2D<bool, 4, 1, 2> ::Vectorize(bHasPixelAnimation) , TLaneVector2D<float, 4, 1, 2> ::Const(0.0) , SharpInput );
+	}
+	return ComposeTranslucency(SharpInput, Blur3x3(BlurInput));
+}
+TLaneVector2D<float, 4, 1, 2>  RemovePerceptionAdd(TLaneVector2D<float, 4, 1, 2>  SrcColor, const float SourcePerceptionAdd)
+{
+	TLaneVector2D<float, 4, 1, 2>  Minus = TLaneVector2D<float, 4, 1, 2> ::Const(float(1.0)) - SrcColor;
+	TLaneVector2D<float, 4, 1, 2>  LDRToLinear = min(TLaneVector2D<float, 4, 1, 2> ::Const(float(SourcePerceptionAdd)) * rcp(Minus), TLaneVector2D<float, 4, 1, 2> ::Const(float(MaxHalfFloat)));
+	return SrcColor * LDRToLinear;
+}
+TLaneVector2D<float, 4, 1, 2>  AddPerceptionAdd(TLaneVector2D<float, 4, 1, 2>  SrcColor, const float DestPerceptionAdd)
+{
+	SrcColor = SrcColor * rcp(SrcColor + TLaneVector2D<float, 4, 1, 2> ::Const(float(DestPerceptionAdd)));
+	return SrcColor;
+}
+TLaneVector2D<float, 4, 1, 2>  ChangePerceptionAdd(TLaneVector2D<float, 4, 1, 2>  SrcColor, const float SourcePerceptionAdd, const float DestPerceptionAdd)
+{
+	SrcColor = RemovePerceptionAdd(SrcColor, SourcePerceptionAdd);
+	SrcColor = AddPerceptionAdd(SrcColor, DestPerceptionAdd);
+	return SrcColor;
+}
+TLaneVector2D<float, 1, 1, 2>  ComputeSpatialAntiAliaserLumaLDR(TLaneVector2D<float, 4, 1, 2>  SceneColor)
+{
+	const float SpatialAAExposure = float(0.5);
+	TLaneVector2D<float, 1, 1, 2>  AALumaLDR;
+	 [unroll( (1 * 2) )]
+	for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+	{
+		float PixelLuma = dot(SceneColor.GetElement(ElementIndex).rgb, float3(0.299f, 0.587f, 0.114f));
+		AALumaLDR.SetElement(ElementIndex, PixelLuma / (SpatialAAExposure + PixelLuma));
+	}
+	return AALumaLDR;
+}
+TLaneVector2D<bool, 1, 1, 2>  IsAliasingVisible(TLaneVector2D<float, 4, 1, 2>  ExposedInputBoxSize)
+{
+		TLaneVector2D<float, 1, 1, 2>  ExposedInputLuminanceBox = dot(ExposedInputBoxSize, TLaneVector2D<float, 4, 1, 2> ::Const(float4(0.299f, 0.587f, 0.114f, 0.0)));
+	TLaneVector2D<bool, 1, 1, 2>  bAliasingIsVisible = ExposedInputLuminanceBox > TLaneVector2D<float, 1, 1, 2> ::Const(0.05);
+	return bAliasingIsVisible;
+}
+TLaneVector2D<bool, 1, 1, 2>  ShouldSpatialAntiAlias(TLaneVector2D<bool, 1, 1, 2>  bIsDisoccluded, TLaneVector2D<bool, 1, 1, 2>  bResurrectHistory, TLaneVector2D<bool, 1, 1, 2>  bAliasingIsVisible, TLaneVector2D<float, 1, 1, 2>  RejectionBlendFinal)
+{
+	TLaneVector2D<bool, 1, 1, 2>  bSpatialAntiAlias =  and_internal( bAliasingIsVisible ,  or_internal( RejectionBlendFinal < TLaneVector2D<float, 1, 1, 2> ::Const(float(0.25)) ,  and_internal( bIsDisoccluded , not(bResurrectHistory) ) ) );
+	return bSpatialAntiAlias;
+}
+void MeasureRejection(
+	TLaneVector2D<float, 4, 1, 2>  InputC0,
+	TLaneVector2D<float, 4, 1, 2>  InputC2,
+	TLaneVector2D<float, 4, 1, 2>  HistoryC2,
+	TLaneVector2D<float, 1, 1, 2>   MoireError,
+	bool bEnableMoireError,
+	out TLaneVector2D<float, 1, 1, 2>  OutRejectionBlendFinal,
+	out TLaneVector2D<float, 1, 1, 2>  OutRejectionClampBlend)
+{
+	TLaneVector2D<float, 4, 1, 2>  BackbufferQuantizationErrorVector = TLaneVector2D<float, 4, 1, 2> ::Const(MeasureBackbufferLDRQuantizationError());
+	TLaneVector2D<float, 4, 1, 2>  FilteredHistory = Blur3x3(HistoryC2);
+	TLaneVector2D<float, 4, 1, 2>  TotalVarInputDiffC0C2 = abs(TotalVariation3x3(abs(InputC0 - InputC2)));
+	TLaneVector2D<float, 4, 1, 2>  TotalVarInputC2 = abs(TotalVariation3x3(InputC2));
+	TLaneVector2D<float, 4, 1, 2>  ClampError = BackbufferQuantizationErrorVector;
+	ClampError = max(ClampError, Blur3x3(min(TotalVarInputDiffC0C2, TotalVarInputC2)));
+	TLaneVector2D<float, 4, 1, 2>  InputC2BoxSize = MaxMinusMin3x3(InputC2);
+	ClampError = max(ClampError, InputC2BoxSize * float(FilteringWeight * 0.25));
+	ClampError = ClampError + BackbufferQuantizationErrorVector;
+	TLaneVector2D<float, 4, 1, 2>  FilteredInput   = Blur3x3(InputC2);
+	TLaneVector2D<float, 4, 1, 2>  FilteredBoxMin;
+	TLaneVector2D<float, 4, 1, 2>  FilteredBoxMax;
+	MinMax3x3(FilteredInput,  FilteredBoxMin,  FilteredBoxMax);
+	FilteredBoxMin = FilteredBoxMin - ClampError;
+	FilteredBoxMax = FilteredBoxMax + ClampError;
+	TLaneVector2D<float, 4, 1, 2>  ClampedFilteredHistory =  clamp( FilteredHistory , FilteredBoxMin , FilteredBoxMax );
+	[branch]
+	if (bEnableMoireError)
+	{
+		TLaneVector2D<float, 4, 1, 2>  MoireErrorSize;
+		 [unroll( (1 * 2) )]
+		for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+		{
+			MoireErrorSize.SetElement(ElementIndex, kMoireLumaToChannel * MoireError.GetElement(ElementIndex));
+		}
+		TLaneVector2D<float, 4, 1, 2>  StableFilteredBoxMin = min(FilteredBoxMin, FilteredBoxMax - MoireErrorSize);
+		TLaneVector2D<float, 4, 1, 2>  StableFilteredBoxMax = max(FilteredBoxMax, FilteredBoxMin + MoireErrorSize);
+		ClampedFilteredHistory =  clamp( FilteredHistory , StableFilteredBoxMin , StableFilteredBoxMax );
+	}
+	TLaneVector2D<float, 4, 1, 2>  BoxSize;
+	{
+		BoxSize = (
+			InputC2BoxSize * TLaneVector2D<float, 4, 1, 2> ::Const(FilteringWeight) +
+			(BackbufferQuantizationErrorVector * float(2 * FilteringWeight)));
+		[branch]
+		if (bEnableMoireError)
+		{
+			TLaneVector2D<float, 4, 1, 2>  MoireErrorSize;
+			 [unroll( (1 * 2) )]
+			for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+			{
+				float4 ClampedEnergy = abs(ClampedFilteredHistory.GetElement(ElementIndex) - FilteredHistory.GetElement(ElementIndex));
+				float4 ClampedEnergyAmount = ClampedEnergy * SafeRcp(ClampedEnergy[0] + ClampedEnergy[1] + ClampedEnergy[2]);
+				MoireErrorSize.SetElement(ElementIndex, ClampedEnergyAmount * ((FilteringWeight * float(3.0)) * MoireError.GetElement(ElementIndex)));
+			}
+			BoxSize = max(BoxSize, MoireErrorSize);
+		}
+	}
+	TLaneVector2D<float, 4, 1, 2>  Delta = max(abs(FilteredInput - FilteredHistory), BoxSize);
+	TLaneVector2D<float, 4, 1, 2>  RawClampedEnergy      = abs(ClampedFilteredHistory - FilteredHistory);
+	TLaneVector2D<float, 4, 1, 2>  RawFactor        = saturate(TLaneVector2D<float, 4, 1, 2> ::Const(1.0) - RawClampedEnergy * rcp(Delta));
+	TLaneVector2D<float, 1, 1, 2>  RawRejection      = min3(RawFactor[0], RawFactor[1], RawFactor[2]);
+		RawRejection = min(RawRejection, RawFactor[3]);
+		OutRejectionClampBlend = Min3x3(Median3x3(RawRejection));
+		TLaneVector2D<float, 4, 1, 2>  FilteredClampedEnergy = Max3x3(Median3x3(RawClampedEnergy));
+	TLaneVector2D<float, 4, 1, 2>  FilteredFactor   = saturate(TLaneVector2D<float, 4, 1, 2> ::Const(1.0) - FilteredClampedEnergy * rcp(Delta));
+	TLaneVector2D<float, 1, 1, 2>  FilteredRejection = min3(FilteredFactor[0], FilteredFactor[1], FilteredFactor[2]);
+		FilteredRejection = min(FilteredRejection, FilteredFactor[3]);
+	OutRejectionBlendFinal          = FilteredRejection;
+}
+                                            
+                                
+                                
+                                
+                         
+                  
+                         
+                                
+Texture2D<float4> InputTexture;
+Texture2D<float4> InputSceneTranslucencyTexture;
+Texture2D<float4> ReprojectedHistoryGuideTexture;
+Texture2D<float>  ReprojectedHistoryGuideMetadataTexture;
+Texture2D<float4> ResurrectedHistoryGuideTexture;
+Texture2D<float>  ResurrectedHistoryGuideMetadataTexture;
+Texture2D<float2> DecimateMaskTexture;
+Texture2D<float2> ClosestDepthTexture;
+RWTexture2DArray<float4> HistoryGuideOutput;
+RWTexture2D<float4>  HistoryRejectionOutput;
+RWTexture2D<float2>     DilatedVelocityOutput;
+RWTexture2D<float4>  InputSceneColorOutput;
+RWTexture2D<float>   InputSceneColorLdrLumaOutput;
+RWTexture2D<uint> AntiAliasMaskOutput;
+static uint2 GGroupId = 0;
+static TLaneVector2D<float, 4, 1, 2>  Debug[8];
+int2 ComputeElementPixelPos(const uint ElementIndex)
+{
+	int2 ClampedFetchPixelPos = ComputeElementInputPixelPos(
+		 uint2(1, 2),
+		TileOverscan,
+		InputInfo_ViewportMin,
+		InputInfo_ViewportMax,
+		GGroupId,
+		GGroupThreadIndex,
+		ElementIndex);
+	return ClampedFetchPixelPos;
+}
+TLaneVector2D<uint, 2, 1, 2>  ComputePixelPos()
+{
+	TLaneVector2D<uint, 2, 1, 2>  PixelPos;
+	 [unroll( (1 * 2) )]
+	for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+	{
+		PixelPos.SetElement(ElementIndex, ComputeElementPixelPos(ElementIndex));
+	}
+	return PixelPos;
+}
+int2 ComputeElementOutputPixelPos(const uint ElementIndex)
+{
+	return ComputeElementOutputPixelPos(
+		 uint2(1, 2),
+		TileOverscan,
+		InputInfo_ViewportMin,
+		InputInfo_ViewportMax,
+		GGroupId,
+		GGroupThreadIndex,
+		ElementIndex);
+}
+void FetchDecimateMask(
+	TLaneVector2D<uint, 2, 1, 2>  PixelPos,
+	out TLaneVector2D<float, 1, 1, 2>  VelocityEdge,
+	out TLaneVector2D<bool, 1, 1, 2>  bIsDisoccluded,
+	out TLaneVector2D<bool, 1, 1, 2>  bHasPixelAnimation)
+{
+	 [unroll( (1 * 2) )]
+	for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+	{
+		int2 ClampedFetchPixelPos = PixelPos.GetElement(ElementIndex);
+		float2 DecimateMask = DecimateMaskTexture[ClampedFetchPixelPos];
+		uint BitMask = uint(DecimateMask.r * float(255.0));
+		VelocityEdge.SetElement(ElementIndex, DecimateMask.g);
+		bIsDisoccluded.SetElement(ElementIndex,     (BitMask & uint(0x1)) != uint(0));
+		bHasPixelAnimation.SetElement(ElementIndex, (BitMask & uint(0x2)) != uint(0));
+	}
+}
+void FetchSceneColorAndTranslucency(
+	TLaneVector2D<uint, 2, 1, 2>  PixelPos,
+	out TLaneVector2D<float, 4, 1, 2>  OriginalOpaqueInput,
+	out TLaneVector2D<float, 4, 1, 2>  OriginalTranslucencyInput)
+{
+	 [unroll( (1 * 2) )]
+	for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+	{
+		int2 ClampedFetchPixelPos = PixelPos.GetElement(ElementIndex);
+		float2 TranslucencyTextureUV = ApplyScreenTransform(float2(ClampedFetchPixelPos), InputPixelPosToTranslucencyTextureUV);
+		TranslucencyTextureUV =  clamp( TranslucencyTextureUV , TranslucencyTextureUVMin , TranslucencyTextureUVMax );
+		OriginalOpaqueInput.SetElement(ElementIndex, InputTexture[ClampedFetchPixelPos]);
+		OriginalTranslucencyInput.SetElement(ElementIndex, InputSceneTranslucencyTexture.SampleLevel( D3DStaticBilinearClampedSampler, TranslucencyTextureUV, 0));
+	}
+}
+void FetchHistoryGuide(
+	Texture2D<float4> HistoryGuideTexture,
+	Texture2D<float>  HistoryGuideMetadataTexture,
+	TLaneVector2D<uint, 2, 1, 2>  PixelPos,
+	out TLaneVector2D<float, 4, 1, 2>  History,
+	out TLaneVector2D<float, 1, 1, 2>   HistoryUncertainty)
+{
+	 [unroll( (1 * 2) )]
+	for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+	{
+		int2 ClampedFetchPixelPos = PixelPos.GetElement(ElementIndex);
+		History.SetElement(ElementIndex, HistoryGuideTexture[ClampedFetchPixelPos]);
+		HistoryUncertainty.SetElement(ElementIndex, HistoryGuideMetadataTexture[ClampedFetchPixelPos]);
+	}
+}
+void FetchReprojectedHistoryGuide(
+	TLaneVector2D<uint, 2, 1, 2>  PixelPos,
+	out TLaneVector2D<float, 4, 1, 2>  History,
+	out TLaneVector2D<float, 1, 1, 2>   HistoryUncertainty)
+{
+	FetchHistoryGuide(
+		ReprojectedHistoryGuideTexture,
+		ReprojectedHistoryGuideMetadataTexture,
+		PixelPos,
+		 History,
+		 HistoryUncertainty);
+}
+void FetchResurrectedHistoryGuide(
+	TLaneVector2D<uint, 2, 1, 2>  PixelPos,
+	out TLaneVector2D<float, 4, 1, 2>  History,
+	out TLaneVector2D<float, 1, 1, 2>   HistoryUncertainty)
+{
+	FetchHistoryGuide(
+		ResurrectedHistoryGuideTexture,
+		ResurrectedHistoryGuideMetadataTexture,
+		PixelPos,
+		 History,
+		 HistoryUncertainty);
+}
+TLaneVector2D<bool, 1, 1, 2>  IsResurrectedFrameCloserThanPreviousFrame(TLaneVector2D<float, 4, 1, 2>  ExposedInput, TLaneVector2D<float, 4, 1, 2>  ExposedHistory, TLaneVector2D<float, 4, 1, 2>  ExposedResurrectedHistory)
+{
+	TLaneVector2D<float, 4, 1, 2>  PrevMatch         = abs(ExposedInput - ExposedHistory);
+	TLaneVector2D<float, 4, 1, 2>  ResurrectionMatch = abs(ExposedInput - ExposedResurrectedHistory);
+	TLaneVector2D<float, 4, 1, 2>  MatchDiff = PrevMatch - ResurrectionMatch;
+		TLaneVector2D<float, 1, 1, 2>  TotalMatchDiff = Sum3x3(MatchDiff[0] + MatchDiff[1] + MatchDiff[2] + MatchDiff[3]);
+	TLaneVector2D<float, 1, 1, 2>  bResurrectedPixelIsCloser = saturate((TotalMatchDiff - TLaneVector2D<float, 1, 1, 2> ::Const(float(0.05 * 3.0 * 9.0))) * TLaneVector2D<float, 1, 1, 2> ::Const(float((asfloat(0x7F800000)))));
+	TLaneVector2D<bool, 1, 1, 2>  bResurrectionIsCloser = Sum3x3(bResurrectedPixelIsCloser) > TLaneVector2D<float, 1, 1, 2> ::Const(4.0);
+	return bResurrectionIsCloser;
+}
+bool IsWorthMeasuringRejectionOfResurrectedFrame(TLaneVector2D<float, 1, 1, 2>  PrevRejectionBlendFinal, TLaneVector2D<bool, 1, 1, 2>  bResurrectionIsCloser)
+{
+	bool bComputeResurrection;
+	[branch]
+	if (bEnableResurrection)
+	{
+		TLaneVector2D<bool, 1, 1, 2>  bPrevIsNotGoodEnough = PrevRejectionBlendFinal < TLaneVector2D<float, 1, 1, 2> ::Const(0.5);
+		TLaneVector2D<bool, 1, 1, 2>  bIsValidTilePixel = IsValidTilePixel<1, 2>(TileOverscan);
+		TLaneVector2D<bool, 1, 1, 2>  bShouldComputeResurrection =  and_internal(  and_internal( bResurrectionIsCloser , bPrevIsNotGoodEnough ) , bIsValidTilePixel );
+		bComputeResurrection = AnyThread(AnyComponent(bShouldComputeResurrection));
+	}
+	else
+	{
+		bComputeResurrection = false;
+	}
+	return bComputeResurrection;
+}
+TLaneVector2D<bool, 1, 1, 2>  ShouldResurrectHistory(TLaneVector2D<float, 1, 1, 2>  PrevRejectionBlendFinal, TLaneVector2D<float, 1, 1, 2>  ResurrectionRejectionBlendFinal, TLaneVector2D<bool, 1, 1, 2>  bResurrectionIsCloser)
+{
+	TLaneVector2D<bool, 1, 1, 2>  bIsValidTilePixel = IsValidTilePixel<1, 2>(TileOverscan);
+	TLaneVector2D<bool, 1, 1, 2>  bResurrectionIsBetter = (ResurrectionRejectionBlendFinal - PrevRejectionBlendFinal) > TLaneVector2D<float, 1, 1, 2> ::Const(0.1);
+	TLaneVector2D<bool, 1, 1, 2>  bResurrectHistory =  and_internal(  and_internal( bResurrectionIsCloser , bResurrectionIsBetter ) , bIsValidTilePixel );
+	return bResurrectHistory;
+}
+void FetchDeviceZ(
+	TLaneVector2D<uint, 2, 1, 2>  PixelPos,
+	out TLaneVector2D<float, 1, 1, 2>  DeviceZ)
+{
+	 [unroll( (1 * 2) )]
+	for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+	{
+		int2 ClampedFetchPixelPos = PixelPos.GetElement(ElementIndex);
+		DeviceZ.SetElement(ElementIndex, ClosestDepthTexture[ClampedFetchPixelPos].g);
+	}
+}
+TLaneVector2D<float, 2, 1, 2>  ComputeResurrectionMotionVector(TLaneVector2D<float, 1, 1, 2>  DeviceZ)
+{
+	TLaneVector2D<float, 2, 1, 2>  ResurrectedEncodedScreenVelocity;
+	 [unroll( (1 * 2) )]
+	for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+	{
+		float2 ScreenPos = ApplyScreenTransform(float2(ComputeElementPixelPos(ElementIndex)), InputPixelPosToScreenPos);
+		float4 ThisClip = float4(ScreenPos, DeviceZ.GetElement(ElementIndex), 1);
+		float4 ResurrectionClip = mul(ThisClip, ClipToResurrectionClip); 
+		float2 ResurrectionScreen = ResurrectionClip.xy / ResurrectionClip.w;
+		ResurrectedEncodedScreenVelocity.SetElement(ElementIndex, EncodeVelocityToTexture(float3(ScreenPos - ResurrectionScreen, 0.0)).xy);
+	}
+	return ResurrectedEncodedScreenVelocity;
+}
+TLaneVector2D<float, 4, 1, 2>  UpdateGuide(TLaneVector2D<float, 4, 1, 2>  ExposedInput, TLaneVector2D<float, 4, 1, 2>  ExposedHistory, TLaneVector2D<bool, 1, 1, 2>  bIsDisoccluded, TLaneVector2D<float, 1, 1, 2>  RejectionBlendFinal)
+{
+	TLaneVector2D<bool, 1, 1, 2>  bIsOffScreen = TLaneVector2D<bool, 1, 1, 2> ::Const(false);
+	TLaneVector2D<float, 1, 1, 2>  TotalBlend =  select_internal(  or_internal( bIsOffScreen , bIsDisoccluded ) , TLaneVector2D<float, 1, 1, 2> ::Const(1.0) , saturate(TLaneVector2D<float, 1, 1, 2> ::Const(1.0) - RejectionBlendFinal * TLaneVector2D<float, 1, 1, 2> ::Const(4.0)) );
+	TLaneVector2D<float, 1, 1, 2>  RejectedBlendFactor = max(TLaneVector2D<float, 1, 1, 2> ::Const(float(TheoricBlendFactor)), TLaneVector2D<float, 1, 1, 2> ::Const(1.0) - RejectionBlendFinal);
+	TLaneVector2D<float, 1, 1, 2>  BlendFinal = max(RejectedBlendFactor, TotalBlend);
+	TLaneVector2D<float, 4, 1, 2>  FinalGuide = ExposedInput * TLaneVector2D<float, 4, 1, 2> ::Vectorize(BlendFinal) - ExposedHistory * TLaneVector2D<float, 4, 1, 2> ::Vectorize(BlendFinal - 1.0);
+	return FinalGuide;
+}
+[WaveSize( 64 )]
+[numthreads(((32 / 1) * 1) * (1 * (32 / 2)), 1, 1)]
+void MainCS(
+	uint2 GroupId : SV_GroupID,
+	uint GroupThreadIndex : SV_GroupIndex)
+{
+	GGroupId = GroupId;
+	GGroupThreadIndex = GroupThreadIndex;
+	 [unroll( 8 )]
+	for (uint DebugId = 0; DebugId < 8; DebugId++)
+	{
+		Debug[DebugId].SetAllElements(0.0);
+	}
+	TLaneVector2D<float, 1, 1, 2>   MoireError;
+	{
+		MoireError = TLaneVector2D<float, 1, 1, 2> ::Const(0.0);
+	}
+	TLaneVector2D<float, 1, 1, 2>   VelocityEdge;
+	TLaneVector2D<bool, 1, 1, 2>   bIsDisoccluded;
+	TLaneVector2D<bool, 1, 1, 2>   bHasPixelAnimation;
+	TLaneVector2D<float, 4, 1, 2>  OriginalOpaqueInput;
+	TLaneVector2D<float, 4, 1, 2>  OriginalTranslucencyInput;
+	TLaneVector2D<float, 4, 1, 2>  OriginalHistory;
+	TLaneVector2D<float, 1, 1, 2>   OriginalHistoryUncertainty;
+		TLaneVector2D<float, 4, 1, 2>  OriginalResurrectedHistory;
+		TLaneVector2D<float, 1, 1, 2>   OriginalResurrectedHistoryUncertainty;
+	{
+		[branch]
+		if (bEnableResurrection)
+		 
+		{
+			TLaneVector2D<uint, 2, 1, 2>  PixelPos = ComputePixelPos();
+			FetchDecimateMask(PixelPos,  VelocityEdge,  bIsDisoccluded,  bHasPixelAnimation);
+			FetchSceneColorAndTranslucency(PixelPos,  OriginalOpaqueInput,  OriginalTranslucencyInput);
+			FetchReprojectedHistoryGuide(
+				PixelPos,
+				 OriginalHistory,
+				 OriginalHistoryUncertainty);
+			FetchResurrectedHistoryGuide(
+				PixelPos,
+				 OriginalResurrectedHistory,
+				 OriginalResurrectedHistoryUncertainty);
+		}
+		else 
+		 
+		{
+			TLaneVector2D<uint, 2, 1, 2>  PixelPos = ComputePixelPos();
+			FetchDecimateMask(PixelPos,  VelocityEdge,  bIsDisoccluded,  bHasPixelAnimation);
+			FetchSceneColorAndTranslucency(PixelPos,  OriginalOpaqueInput,  OriginalTranslucencyInput);
+			FetchReprojectedHistoryGuide(
+				PixelPos,
+				 OriginalHistory,
+				 OriginalHistoryUncertainty);
+				OriginalResurrectedHistory            = TLaneVector2D<float, 4, 1, 2> ::Const(0.0);
+				OriginalResurrectedHistoryUncertainty = TLaneVector2D<float, 1, 1, 2> ::Const(0.0);
+		}
+	}
+	{
+		TLaneVector2D<float, 4, 1, 2>  CenterFinalSceneColor = ComposeTranslucency(OriginalOpaqueInput, OriginalTranslucencyInput);
+		CenterFinalSceneColor = min(CenterFinalSceneColor, TLaneVector2D<float, 4, 1, 2> ::Const(float(Max10BitsFloat)));
+		TLaneVector2D<float, 1, 1, 2>  CenterLumaLDR = ComputeSpatialAntiAliaserLumaLDR(CenterFinalSceneColor);
+		 
+		{
+			 [unroll( (1 * 2) )]
+			for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+			{
+				const int2 OutputPixelPos = ComputeElementOutputPixelPos(ElementIndex);
+				InputSceneColorOutput[OutputPixelPos] = CenterFinalSceneColor.GetElement(ElementIndex);
+				InputSceneColorLdrLumaOutput[OutputPixelPos] = CenterLumaLDR.GetElement(ElementIndex);
+			}
+		}
+	}
+	TLaneVector2D<float, 4, 1, 2>  OriginalInput = ComposeTranslucencyForRejection(OriginalOpaqueInput, OriginalTranslucencyInput, bHasPixelAnimation);
+	TLaneVector2D<float, 1, 1, 2>  RejectionBlendFinal = TLaneVector2D<float, 1, 1, 2> ::Const(1.0);
+	TLaneVector2D<float, 1, 1, 2>  RejectionClampBlend = TLaneVector2D<float, 1, 1, 2> ::Const(1.0);
+	TLaneVector2D<bool, 1, 1, 2>  bAliasingIsVisible = TLaneVector2D<bool, 1, 1, 2> ::Const(false);
+		TLaneVector2D<bool, 1, 1, 2>  bResurrectionIsCloser;
+	 
+	{
+		TLaneVector2D<float, 4, 1, 2>  Input   = OriginalInput;
+		TLaneVector2D<float, 4, 1, 2>  History = OriginalHistory;
+		TLaneVector2D<float, 4, 1, 2>  ExposedInput = AddPerceptionAdd(Input,  PerceptionAdd);
+		TLaneVector2D<float, 4, 1, 2>  ExposedHistory = ChangePerceptionAdd(
+			History,
+			 kHistoryGuidePreceptionAdd,
+			 PerceptionAdd);
+		[branch]
+		if (bEnableResurrection)
+		{
+			TLaneVector2D<float, 4, 1, 2>  ExposedResurrectedHistory = ChangePerceptionAdd(
+				OriginalResurrectedHistory,
+				 kHistoryGuidePreceptionAdd,
+				 PerceptionAdd);
+			bResurrectionIsCloser = IsResurrectedFrameCloserThanPreviousFrame(ExposedInput, ExposedHistory, ExposedResurrectedHistory);
+		}
+		else
+		{
+			bResurrectionIsCloser = TLaneVector2D<bool, 1, 1, 2> ::Const(false);
+		}
+		TLaneVector2D<float, 4, 1, 2>  ExposedInputMin;
+		TLaneVector2D<float, 4, 1, 2>  ExposedInputMax;
+		MinMax3x3(ExposedInput,  ExposedInputMin,  ExposedInputMax);
+		bAliasingIsVisible = IsAliasingVisible(ExposedInputMax - ExposedInputMin);
+		TLaneVector2D<float, 4, 1, 2>  ClampedInput = Clamp3x3(ExposedInput,  clamp( ExposedHistory , ExposedInputMin , ExposedInputMax ));
+		TLaneVector2D<float, 4, 1, 2>  ClampedHistory = AnnihilateToGuide3x3(ExposedHistory,  ExposedInput);
+		MeasureRejection(
+			    ExposedInput,
+			    ClampedInput,
+			  ClampedHistory,
+			 MoireError,
+			 (0) != 0 && bEnableFlickeringHeuristic != 0,
+			 RejectionBlendFinal,
+			 RejectionClampBlend);
+	}
+	TLaneVector2D<bool, 1, 1, 2>  bResurrectHistory = TLaneVector2D<bool, 1, 1, 2> ::Const(false);
+	bool bComputeResurrection = IsWorthMeasuringRejectionOfResurrectedFrame(RejectionBlendFinal, bResurrectionIsCloser);
+	[branch]
+	if (bComputeResurrection)
+	 
+	{
+		TLaneVector2D<float, 4, 1, 2>  Input;
+		TLaneVector2D<float, 4, 1, 2>  ResurrectedHistory;
+		TLaneVector2D<float, 1, 1, 2>   ResurrectedHistoryUncertainty;
+		ResurrectedHistory = OriginalResurrectedHistory;
+		Input = OriginalInput;
+		TLaneVector2D<float, 4, 1, 2>  ExposedInput = AddPerceptionAdd(Input,  PerceptionAdd);
+		TLaneVector2D<float, 4, 1, 2>  ExposedResurrectedHistory = ChangePerceptionAdd(
+			ResurrectedHistory,
+			 kHistoryGuidePreceptionAdd,
+			 PerceptionAdd);
+		TLaneVector2D<float, 4, 1, 2>  ClampedResurrectedInput, ClampedResurrectedHistory;
+		AnnihilateMutually3x3(ExposedInput, ExposedResurrectedHistory,  ClampedResurrectedInput,  ClampedResurrectedHistory);
+		TLaneVector2D<float, 1, 1, 2>  ResurrectionRejectionBlendFinal = TLaneVector2D<float, 1, 1, 2> ::Const(1.0);
+		TLaneVector2D<float, 1, 1, 2>  ResurrectionRejectionClampBlend = TLaneVector2D<float, 1, 1, 2> ::Const(1.0);
+		MeasureRejection(
+			    ExposedInput,
+			    ClampedResurrectedInput,
+			  ClampedResurrectedHistory,
+			 TLaneVector2D<float, 1, 1, 2> ::Const(0.0),
+			 (0) != 0 && bEnableFlickeringHeuristic != 0,
+			 ResurrectionRejectionBlendFinal,
+			 ResurrectionRejectionClampBlend);
+		bResurrectHistory = ShouldResurrectHistory(RejectionBlendFinal, ResurrectionRejectionBlendFinal, bResurrectionIsCloser);
+		RejectionBlendFinal =  select_internal( bResurrectHistory , ResurrectionRejectionBlendFinal , RejectionBlendFinal );
+		RejectionClampBlend =  select_internal( bResurrectHistory , ResurrectionRejectionClampBlend , RejectionClampBlend );
+	} 
+	TLaneVector2D<float, 4, 1, 2>  FinalGuide;
+	TLaneVector2D<float, 1, 1, 2>   InputUncertainty;
+	TLaneVector2D<float, 1, 1, 2>   HistoryUncertainty;
+	 
+	{
+		TLaneVector2D<float, 4, 1, 2>  Input;
+		TLaneVector2D<float, 4, 1, 2>  History;
+			Input            = OriginalInput;
+			InputUncertainty = VelocityEdge;
+			History            = OriginalHistory;
+			HistoryUncertainty = OriginalHistoryUncertainty;
+		[branch]
+		if (AnyComponent(bResurrectHistory))
+		 
+		{
+			TLaneVector2D<float, 4, 1, 2>  ResurrectedHistory;
+			TLaneVector2D<float, 1, 1, 2>   ResurrectedHistoryUncertainty;
+			TLaneVector2D<float, 1, 1, 2>  DeviceZ;
+			 
+			{
+				TLaneVector2D<uint, 2, 1, 2>  PixePos = ComputePixelPos();
+					ResurrectedHistory            = OriginalResurrectedHistory;
+					ResurrectedHistoryUncertainty = OriginalResurrectedHistoryUncertainty;
+				FetchDeviceZ(PixePos,  DeviceZ);
+			}
+			History =  select_internal( TLaneVector2D<bool, 4, 1, 2> ::Vectorize(bResurrectHistory) , ResurrectedHistory , History );
+			HistoryUncertainty =  select_internal( bResurrectHistory , ResurrectedHistoryUncertainty , HistoryUncertainty );
+			 
+			{
+				TLaneVector2D<float, 2, 1, 2>  ResurrectionMotionVector = ComputeResurrectionMotionVector(DeviceZ);
+				 [unroll( (1 * 2) )]
+				for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+				{
+					int2 OutputPixelPos = ComputeElementOutputPixelPos(ElementIndex);
+					OutputPixelPos.x =  select_internal( bResurrectHistory.GetElement(ElementIndex) , OutputPixelPos.x , int(-1) );
+					DilatedVelocityOutput[OutputPixelPos] = ResurrectionMotionVector.GetElement(ElementIndex);
+				}
+			}
+		}
+		TLaneVector2D<float, 4, 1, 2>  ExposedInput = AddPerceptionAdd(Input,  kHistoryGuidePreceptionAdd);
+		FinalGuide = UpdateGuide(ExposedInput, History, bIsDisoccluded, RejectionBlendFinal);
+	}
+	TLaneVector2D<float, 1, 1, 2>   DisableHistoryClamp;
+	TLaneVector2D<float, 1, 1, 2>   IncreaseValidityMultiplier;
+	 
+	{
+		DisableHistoryClamp        =  select_internal(  and_internal( bIsDisoccluded , not(bResurrectHistory) ) , TLaneVector2D<float, 1, 1, 2> ::Const(0.0) , min(RejectionClampBlend, min(InputUncertainty, Min3x3(HistoryUncertainty))) );
+		IncreaseValidityMultiplier =  select_internal(  and_internal( bIsDisoccluded , not(bResurrectHistory) ) , TLaneVector2D<float, 1, 1, 2> ::Const(0.0) , RejectionClampBlend );
+	}
+	TLaneVector2D<bool, 1, 1, 2>  bSpatialAntiAlias = ShouldSpatialAntiAlias(bIsDisoccluded, bResurrectHistory, bAliasingIsVisible, RejectionBlendFinal);
+	 
+	{
+		const uint LaneIndex = GGroupThreadIndex;
+		 [unroll( (1 * 2) )]
+		for (uint ElementIndex = 0; ElementIndex < (1 * 2); ElementIndex++)
+		{
+			const int2 LaneSimdPixelOffset = GetElementPixelOffsetInTile(1, 2, GGroupThreadIndex, ElementIndex);
+			const int2 OutputPixelPos = ComputeElementOutputPixelPos(ElementIndex);
+			const int2 OutputHistoryPixelPos = OutputPixelPos - int2(InputInfo_ViewportMin);
+			float4 FinalGuideColor = FinalGuide.GetElement(ElementIndex);
+			float BitMask = (
+				 select_internal( bIsDisoccluded.GetElement(ElementIndex) , float(0x0) , float(0x1) * rcp(float(255.0)) ) + 
+				 select_internal( bResurrectHistory.GetElement(ElementIndex) , float(0x2) * rcp(float(255.0)) , float(0x0) ));
+				HistoryGuideOutput[int3(OutputHistoryPixelPos, 0)] = FinalGuideColor;
+				HistoryGuideOutput[int3(OutputHistoryPixelPos, 1)] = float4(InputUncertainty.GetElement(ElementIndex), 0, 0, 0);
+			HistoryRejectionOutput[OutputPixelPos] = float4(
+				RejectionBlendFinal.GetElement(ElementIndex) - float(0.5 * rcp(256.0)),
+				DisableHistoryClamp.GetElement(ElementIndex) - float(0.5 * rcp(256.0)),
+				float(255.5 * rcp(256.0)) - IncreaseValidityMultiplier.GetElement(ElementIndex),
+				BitMask);
+			AntiAliasMaskOutput[OutputPixelPos] =  select_internal( bSpatialAntiAlias.GetElement(ElementIndex) , uint(1) , uint(0) );
+		}
+	}
+}
+
+/* BASE64_ENV
+BQAAABkAAABWSUVXX0hBU19USUxFT0ZGU0VUX0RBVEEAAAEAAAAeAAAAUFJJTUlUSVZFX0hBU19USUxFT0ZGU0VUX0RBVEEAAAEAAAARAAAASU5TVEFOQ0VEX1NURVJFTwAAAAAAAAsAAABNVUxUSV9WSUVXAAAAAAAAEgAAAE1PQklMRV9NVUxUSV9WSUVXAAAAAAAAIBAYYAQAAAAAAAAAaAAAAAQIAAAECAEABAUCAAQFAwAEBQQABAUFAAQFBgAEBQcABAUIAAQFCQAEBQoABAULAAQIDAAECA0ABAgOAAQIDwAECBAABAgRAAQIEgAECBMABAgUAAQFFQAEBRYABAUXAAQFGAAECBkABAgaAAQIGwAEBRwABAgdAAQFHgAECB8ABAUgAAQIIQAEBSIABAgjAAQFJAAECCUABAUmAAQIJwAECCgABAgpAAQIKgAECCsABAgsAAQILQAEBS4ABAgvAAQGMAAEBTEABAgyAAQFMwAECDQABAU1AAQINgAEBTcABAg4AAQFOQAECDoABAU7AAQIPAAEBT0ABAg+AAQFPwAECEAABAVBAAQIQgAEBUMABAhEAAQFRQAEBUYABAVHAAQFSAAECEkABAVKAAQISwAEBUwABAhNAAQFTgAECE8ABAVQAAQIUQAECFIABAVTAAQIVAAEBVUABAhWAAQGVwAEBlgABAVZAAQIWgAEBVsABAhcAAQIXQAEBl4ABAZfAAQHYAAEBmEACQkAAAkJAQAJCQIACQkDAAkQBAAJEAUABAAAAAUAAABWaWV3AAUAAABWaWV3ABoCaBUDAAAAAPAMAABWAGkAZQB3AF8ATQBhAHQAZQByAGkAYQBsAFQAZQB4AHQAdQByAGUAQgBpAGwAaQBuAGUAYQByAFcAcgBhAHAAZQBkAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8ATQBhAHQAZQByAGkAYQBsAFQAZQB4AHQAdQByAGUAQgBpAGwAaQBuAGUAYQByAEMAbABhAG0AcABlAGQAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABJAG4AZABpAHIAZQBjAHQAaQBvAG4AVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABCAHIAaQBjAGsAQQBtAGIAaQBlAG4AdABWAGUAYwB0AG8AcgAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABCAHIAaQBjAGsAUwBIAEMAbwBlAGYAZgBpAGMAaQBlAG4AdABzADAAAABWAGkAZQB3AF8AVgBvAGwAdQBtAGUAdAByAGkAYwBMAGkAZwBoAHQAbQBhAHAAQgByAGkAYwBrAFMASABDAG8AZQBmAGYAaQBjAGkAZQBuAHQAcwAxAAAAVgBpAGUAdwBfAFYAbwBsAHUAbQBlAHQAcgBpAGMATABpAGcAaAB0AG0AYQBwAEIAcgBpAGMAawBTAEgAQwBvAGUAZgBmAGkAYwBpAGUAbgB0AHMAMgAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABCAHIAaQBjAGsAUwBIAEMAbwBlAGYAZgBpAGMAaQBlAG4AdABzADMAAABWAGkAZQB3AF8AVgBvAGwAdQBtAGUAdAByAGkAYwBMAGkAZwBoAHQAbQBhAHAAQgByAGkAYwBrAFMASABDAG8AZQBmAGYAaQBjAGkAZQBuAHQAcwA0AAAAVgBpAGUAdwBfAFYAbwBsAHUAbQBlAHQAcgBpAGMATABpAGcAaAB0AG0AYQBwAEIAcgBpAGMAawBTAEgAQwBvAGUAZgBmAGkAYwBpAGUAbgB0AHMANQAAAFYAaQBlAHcAXwBTAGsAeQBCAGUAbgB0AE4AbwByAG0AYQBsAEIAcgBpAGMAawBUAGUAeAB0AHUAcgBlAAAAVgBpAGUAdwBfAEQAaQByAGUAYwB0AGkAbwBuAGEAbABMAGkAZwBoAHQAUwBoAGEAZABvAHcAaQBuAGcAQgByAGkAYwBrAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8AVgBvAGwAdQBtAGUAdAByAGkAYwBMAGkAZwBoAHQAbQBhAHAAQgByAGkAYwBrAEEAbQBiAGkAZQBuAHQAVgBlAGMAdABvAHIAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAMAAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAMQAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAMgAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAMwAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIANAAAAFYAaQBlAHcAXwBWAG8AbAB1AG0AZQB0AHIAaQBjAEwAaQBnAGgAdABtAGEAcABUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIANQAAAFYAaQBlAHcAXwBTAGsAeQBCAGUAbgB0AE4AbwByAG0AYQBsAFQAZQB4AHQAdQByAGUAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBEAGkAcgBlAGMAdABpAG8AbgBhAGwATABpAGcAaAB0AFMAaABhAGQAbwB3AGkAbgBnAFQAZQB4AHQAdQByAGUAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBHAGwAbwBiAGEAbABEAGkAcwB0AGEAbgBjAGUARgBpAGUAbABkAFAAYQBnAGUAQQB0AGwAYQBzAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8ARwBsAG8AYgBhAGwARABpAHMAdABhAG4AYwBlAEYAaQBlAGwAZABDAG8AdgBlAHIAYQBnAGUAQQB0AGwAYQBzAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8ARwBsAG8AYgBhAGwARABpAHMAdABhAG4AYwBlAEYAaQBlAGwAZABQAGEAZwBlAFQAYQBiAGwAZQBUAGUAeAB0AHUAcgBlAAAAVgBpAGUAdwBfAEcAbABvAGIAYQBsAEQAaQBzAHQAYQBuAGMAZQBGAGkAZQBsAGQATQBpAHAAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBHAGwAbwBiAGEAbABEAGkAcwB0AGEAbgBjAGUARgBpAGUAbABkAFAAYQBnAGUAQQB0AGwAYQBzAFQAZQB4AHQAdQByAGUAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBHAGwAbwBiAGEAbABEAGkAcwB0AGEAbgBjAGUARgBpAGUAbABkAEMAbwB2AGUAcgBhAGcAZQBBAHQAbABhAHMAVABlAHgAdAB1AHIAZQBTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAEcAbABvAGIAYQBsAEQAaQBzAHQAYQBuAGMAZQBGAGkAZQBsAGQATQBpAHAAVABlAHgAdAB1AHIAZQBTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAEEAdABtAG8AcwBwAGgAZQByAGUAVAByAGEAbgBzAG0AaQB0AHQAYQBuAGMAZQBUAGUAeAB0AHUAcgBlAAAAVgBpAGUAdwBfAEEAdABtAG8AcwBwAGgAZQByAGUAVAByAGEAbgBzAG0AaQB0AHQAYQBuAGMAZQBUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AQQB0AG0AbwBzAHAAaABlAHIAZQBJAHIAcgBhAGQAaQBhAG4AYwBlAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8AQQB0AG0AbwBzAHAAaABlAHIAZQBJAHIAcgBhAGQAaQBhAG4AYwBlAFQAZQB4AHQAdQByAGUAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBBAHQAbQBvAHMAcABoAGUAcgBlAEkAbgBzAGMAYQB0AHQAZQByAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8AQQB0AG0AbwBzAHAAaABlAHIAZQBJAG4AcwBjAGEAdAB0AGUAcgBUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUABlAHIAbABpAG4ATgBvAGkAcwBlAEcAcgBhAGQAaQBlAG4AdABUAGUAeAB0AHUAcgBlAAAAVgBpAGUAdwBfAFAAZQByAGwAaQBuAE4AbwBpAHMAZQBHAHIAYQBkAGkAZQBuAHQAVABlAHgAdAB1AHIAZQBTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAFAAZQByAGwAaQBuAE4AbwBpAHMAZQAzAEQAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBQAGUAcgBsAGkAbgBOAG8AaQBzAGUAMwBEAFQAZQB4AHQAdQByAGUAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBTAG8AYgBvAGwAUwBhAG0AcABsAGkAbgBnAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8AUwBoAGEAcgBlAGQAUABvAGkAbgB0AFcAcgBhAHAAcABlAGQAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBTAGgAYQByAGUAZABQAG8AaQBuAHQAQwBsAGEAbQBwAGUAZABTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAFMAaABhAHIAZQBkAEIAaQBsAGkAbgBlAGEAcgBXAHIAYQBwAHAAZQBkAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUwBoAGEAcgBlAGQAQgBpAGwAaQBuAGUAYQByAEMAbABhAG0AcABlAGQAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBTAGgAYQByAGUAZABCAGkAbABpAG4AZQBhAHIAQQBuAGkAcwBvAEMAbABhAG0AcABlAGQAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBTAGgAYQByAGUAZABUAHIAaQBsAGkAbgBlAGEAcgBXAHIAYQBwAHAAZQBkAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUwBoAGEAcgBlAGQAVAByAGkAbABpAG4AZQBhAHIAQwBsAGEAbQBwAGUAZABTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAFAAcgBlAEkAbgB0AGUAZwByAGEAdABlAGQAQgBSAEQARgAAAFYAaQBlAHcAXwBQAHIAZQBJAG4AdABlAGcAcgBhAHQAZQBkAEIAUgBEAEYAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBTAGsAeQBJAHIAcgBhAGQAaQBhAG4AYwBlAEUAbgB2AGkAcgBvAG4AbQBlAG4AdABNAGEAcAAAAFYAaQBlAHcAXwBUAHIAYQBuAHMAbQBpAHQAdABhAG4AYwBlAEwAdQB0AFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8AVAByAGEAbgBzAG0AaQB0AHQAYQBuAGMAZQBMAHUAdABUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUwBrAHkAVgBpAGUAdwBMAHUAdABUAGUAeAB0AHUAcgBlAAAAVgBpAGUAdwBfAFMAawB5AFYAaQBlAHcATAB1AHQAVABlAHgAdAB1AHIAZQBTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAEQAaQBzAHQAYQBuAHQAUwBrAHkATABpAGcAaAB0AEwAdQB0AFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8ARABpAHMAdABhAG4AdABTAGsAeQBMAGkAZwBoAHQATAB1AHQAVABlAHgAdAB1AHIAZQBTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAEMAYQBtAGUAcgBhAEEAZQByAGkAYQBsAFAAZQByAHMAcABlAGMAdABpAHYAZQBWAG8AbAB1AG0AZQAAAFYAaQBlAHcAXwBDAGEAbQBlAHIAYQBBAGUAcgBpAGEAbABQAGUAcgBzAHAAZQBjAHQAaQB2AGUAVgBvAGwAdQBtAGUAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBDAGEAbQBlAHIAYQBBAGUAcgBpAGEAbABQAGUAcgBzAHAAZQBjAHQAaQB2AGUAVgBvAGwAdQBtAGUATQBpAGUATwBuAGwAeQAAAFYAaQBlAHcAXwBDAGEAbQBlAHIAYQBBAGUAcgBpAGEAbABQAGUAcgBzAHAAZQBjAHQAaQB2AGUAVgBvAGwAdQBtAGUATQBpAGUATwBuAGwAeQBTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAEMAYQBtAGUAcgBhAEEAZQByAGkAYQBsAFAAZQByAHMAcABlAGMAdABpAHYAZQBWAG8AbAB1AG0AZQBSAGEAeQBPAG4AbAB5AAAAVgBpAGUAdwBfAEMAYQBtAGUAcgBhAEEAZQByAGkAYQBsAFAAZQByAHMAcABlAGMAdABpAHYAZQBWAG8AbAB1AG0AZQBSAGEAeQBPAG4AbAB5AFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8ASABhAGkAcgBTAGMAYQB0AHQAZQByAGkAbgBnAEwAVQBUAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8ASABhAGkAcgBTAGMAYQB0AHQAZQByAGkAbgBnAEwAVQBUAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8ARwBHAFgATABUAEMATQBhAHQAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBHAEcAWABMAFQAQwBNAGEAdABTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAEcARwBYAEwAVABDAEEAbQBwAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8ARwBHAFgATABUAEMAQQBtAHAAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBTAGgAZQBlAG4ATABUAEMAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBTAGgAZQBlAG4ATABUAEMAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBTAGgAYQBkAGkAbgBnAEUAbgBlAHIAZwB5AEcARwBYAFMAcABlAGMAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBTAGgAYQBkAGkAbgBnAEUAbgBlAHIAZwB5AEcARwBYAEcAbABhAHMAcwBUAGUAeAB0AHUAcgBlAAAAVgBpAGUAdwBfAFMAaABhAGQAaQBuAGcARQBuAGUAcgBnAHkAQwBsAG8AdABoAFMAcABlAGMAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBTAGgAYQBkAGkAbgBnAEUAbgBlAHIAZwB5AEQAaQBmAGYAdQBzAGUAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBTAGgAYQBkAGkAbgBnAEUAbgBlAHIAZwB5AFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8ARwBsAGkAbgB0AFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8ARwBsAGkAbgB0AFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUwBpAG0AcABsAGUAVgBvAGwAdQBtAGUAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBTAGkAbQBwAGwAZQBWAG8AbAB1AG0AZQBUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUwBpAG0AcABsAGUAVgBvAGwAdQBtAGUARQBuAHYAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBTAGkAbQBwAGwAZQBWAG8AbAB1AG0AZQBFAG4AdgBUAGUAeAB0AHUAcgBlAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUwBTAFAAcgBvAGYAaQBsAGUAcwBUAGUAeAB0AHUAcgBlAAAAVgBpAGUAdwBfAFMAUwBQAHIAbwBmAGkAbABlAHMAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBTAFMAUAByAG8AZgBpAGwAZQBzAFQAcgBhAG4AcwBtAGkAcwBzAGkAbwBuAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUwBTAFAAcgBvAGYAaQBsAGUAcwBQAHIAZQBJAG4AdABlAGcAcgBhAHQAZQBkAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8AUwBTAFAAcgBvAGYAaQBsAGUAcwBQAHIAZQBJAG4AdABlAGcAcgBhAHQAZQBkAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8AUwBwAGUAYwB1AGwAYQByAFAAcgBvAGYAaQBsAGUAVABlAHgAdAB1AHIAZQAAAFYAaQBlAHcAXwBTAHAAZQBjAHUAbABhAHIAUAByAG8AZgBpAGwAZQBTAGEAbQBwAGwAZQByAAAAVgBpAGUAdwBfAFcAYQB0AGUAcgBJAG4AZABpAHIAZQBjAHQAaQBvAG4AAABWAGkAZQB3AF8AVwBhAHQAZQByAEQAYQB0AGEAAABWAGkAZQB3AF8AUgBlAGMAdABMAGkAZwBoAHQAQQB0AGwAYQBzAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8AUgBlAGMAdABMAGkAZwBoAHQAQQB0AGwAYQBzAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8ASQBFAFMAQQB0AGwAYQBzAFQAZQB4AHQAdQByAGUAAABWAGkAZQB3AF8ASQBFAFMAQQB0AGwAYQBzAFMAYQBtAHAAbABlAHIAAABWAGkAZQB3AF8ATABhAG4AZABzAGMAYQBwAGUAVwBlAGkAZwBoAHQAbQBhAHAAUwBhAG0AcABsAGUAcgAAAFYAaQBlAHcAXwBMAGEAbgBkAHMAYwBhAHAAZQBJAG4AZABpAHIAZQBjAHQAaQBvAG4AAABWAGkAZQB3AF8ATABhAG4AZABzAGMAYQBwAGUAUABlAHIAQwBvAG0AcABvAG4AZQBuAHQARABhAHQAYQAAAFYAaQBlAHcAXwBWAFQARgBlAGUAZABiAGEAYwBrAEIAdQBmAGYAZQByAAAAVgBpAGUAdwBfAFAAaAB5AHMAaQBjAHMARgBpAGUAbABkAEMAbABpAHAAbQBhAHAAQgB1AGYAZgBlAHIAAAAYAAAARHJhd1JlY3RhbmdsZVBhcmFtZXRlcnMAAAAAAAABMAABAAAAAAAAAAAKAAAAU3Vic3RyYXRlAAAAAABBEXAJAQAAAAC8AAAAUwB1AGIAcwB0AHIAYQB0AGUAXwBNAGEAdABlAHIAaQBhAGwAVABlAHgAdAB1AHIAZQBBAHIAcgBhAHkAAABTAHUAYgBzAHQAcgBhAHQAZQBfAFQAbwBwAEwAYQB5AGUAcgBUAGUAeAB0AHUAcgBlAAAAUwB1AGIAcwB0AHIAYQB0AGUAXwBPAHAAYQBxAHUAZQBSAG8AdQBnAGgAUgBlAGYAcgBhAGMAdABpAG8AbgBUAGUAeAB0AHUAcgBlAAAAUwB1AGIAcwB0AHIAYQB0AGUAXwBDAGwAbwBzAHUAcgBlAE8AZgBmAHMAZQB0AFQAZQB4AHQAdQByAGUAAABTAHUAYgBzAHQAcgBhAHQAZQBfAEMAbABvAHMAdQByAGUAVABpAGwAZQBCAHUAZgBmAGUAcgAAAFMAdQBiAHMAdAByAGEAdABlAF8AQwBsAG8AcwB1AHIAZQBUAGkAbABlAEMAbwB1AG4AdABCAHUAZgBmAGUAcgAAAA4AAABJbnN0YW5jZWRWaWV3AA4AAABJbnN0YW5jZWRWaWV3AAEDsBwDAAAAAAAAAAAAAAAA
+BASE64_ENV */
+/* DIRECT COMPILE
+-directcompile -format=PCD3D_SM6 -entry="MainCS" -shaderPlatformName=PCD3D_SM6 -supportedHardwareMask=0 -cs C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Env_BO_01/Saved/ShaderDebugInfo/PCD3D_SM6/Global/FTSRRejectShadingCS/40/TSRRejectShading.usf -nocrashreports
+DIRECT COMPILE */
