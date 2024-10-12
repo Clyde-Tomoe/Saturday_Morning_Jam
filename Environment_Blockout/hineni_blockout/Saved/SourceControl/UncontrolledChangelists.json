@@ -5,6 +5,10 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
+				"C:/EmilyOsorio/GameProjects/Saturday_Morning_Jam/Environment_Blockout/hineni_blockout/Content/blockout_hineni01.umap",
+				"C:/EmilyOsorio/GameProjects/Saturday_Morning_Jam/Environment_Blockout/hineni_blockout/Content/blockout_hineni02.umap",
+				"C:/EmilyOsorio/GameProjects/Saturday_Morning_Jam/Environment_Blockout/hineni_blockout/Content/_GENERATED/lr104student17/CubeGridToolOutput_1BC75DE0.uasset",
+				"C:/EmilyOsorio/GameProjects/Saturday_Morning_Jam/Environment_Blockout/hineni_blockout/Content/Art/StaticMesh/Wall.uasset",
 				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/hineni_blockout/Content/StarterContent/Architecture/Floor_400x400.uasset",
 				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/hineni_blockout/Content/NewMap.umap"
 			]
