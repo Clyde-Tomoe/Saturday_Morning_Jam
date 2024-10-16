@@ -1,0 +1,19 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset",
+				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/Maps/hineni_blockout01.umap",
+				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/Maps/hineni_blockout02.umap",
+				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/_GENERATED/Emily/CubeGridToolOutput_2AEDA6C5.uasset",
+				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/Maps/_GENERATED/Emily/CubeGridToolOutput_34332A5C.uasset",
+				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/Maps/_GENERATED/Emily/CubeGridToolOutput_46B0A9F6.uasset",
+				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/Maps/_GENERATED/Emily/CubeGridToolOutput_CF7DEFD0.uasset",
+				"C:/3DProjects/GAD101/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/Maps/hineni_blockout03.umap"
+			]
+		}
+	]
+}
