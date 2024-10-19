@@ -1399,3 +1399,35 @@ LogConfig: CVar [[LogNamedEventFilters:Frame *]] deferred - dummy variable creat
 [2024.10.19-16.42.57:174][109]LogFileHelpers: InternalPromptForCheckoutAndSave took 141 ms (total: 267 ms)
 [2024.10.19-16.42.57:175][109]AssetCheck: New page: Asset Save: mainmenumap
 [2024.10.19-16.42.57:175][109]LogContentValidation: Display: Validating /Script/Engine.World /Game/mainmenumap.mainmenumap
+[2024.10.19-16.44.11:864][971]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2024.10.19-16.44.11:994][971]LogUObjectHash: Compacting FUObjectHashTables data took   0.71ms
+[2024.10.19-16.44.12:004][971]LogSavePackage: Moving output files for package: /Game/mainmenumap
+[2024.10.19-16.44.12:008][971]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/mainmenumapC8E133CB41952C761F7EA0B6F80C10C1.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/mainmenumap.umap'
+[2024.10.19-16.44.12:024][971]LogFileHelpers: Saving map 'mainmenumap' took 0.099
+[2024.10.19-16.44.12:032][971]LogFileHelpers: InternalPromptForCheckoutAndSave took 167 ms (total: 435 ms)
+[2024.10.19-16.44.12:033][971]AssetCheck: New page: Asset Save: mainmenumap
+[2024.10.19-16.44.12:033][971]LogContentValidation: Display: Validating /Script/Engine.World /Game/mainmenumap.mainmenumap
+[2024.10.19-16.44.12:419][ 17]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2024.10.19-16.44.12:516][ 17]LogUObjectHash: Compacting FUObjectHashTables data took   0.79ms
+[2024.10.19-16.44.12:524][ 17]LogSavePackage: Moving output files for package: /Game/mainmenumap
+[2024.10.19-16.44.12:527][ 17]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/mainmenumap85E1582C49AC8E64075B3AAF1097DD0C.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/mainmenumap.umap'
+[2024.10.19-16.44.12:541][ 17]LogFileHelpers: Saving map 'mainmenumap' took 0.086
+[2024.10.19-16.44.12:548][ 17]LogFileHelpers: InternalPromptForCheckoutAndSave took 128 ms (total: 563 ms)
+[2024.10.19-16.44.12:549][ 17]AssetCheck: New page: Asset Save: mainmenumap
+[2024.10.19-16.44.12:549][ 17]LogContentValidation: Display: Validating /Script/Engine.World /Game/mainmenumap.mainmenumap
+[2024.10.19-16.44.12:692][ 34]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2024.10.19-16.44.12:819][ 34]LogUObjectHash: Compacting FUObjectHashTables data took   0.54ms
+[2024.10.19-16.44.12:825][ 34]LogSavePackage: Moving output files for package: /Game/mainmenumap
+[2024.10.19-16.44.12:829][ 34]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/mainmenumap5C749AC64BD7337614AEBDB8C20870DA.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/mainmenumap.umap'
+[2024.10.19-16.44.12:842][ 34]LogFileHelpers: Saving map 'mainmenumap' took 0.085
+[2024.10.19-16.44.12:849][ 34]LogFileHelpers: InternalPromptForCheckoutAndSave took 157 ms (total: 720 ms)
+[2024.10.19-16.44.12:850][ 34]AssetCheck: New page: Asset Save: mainmenumap
+[2024.10.19-16.44.12:850][ 34]LogContentValidation: Display: Validating /Script/Engine.World /Game/mainmenumap.mainmenumap
+[2024.10.19-16.44.13:043][ 57]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2024.10.19-16.44.13:167][ 57]LogUObjectHash: Compacting FUObjectHashTables data took   0.72ms
+[2024.10.19-16.44.13:175][ 57]LogSavePackage: Moving output files for package: /Game/mainmenumap
+[2024.10.19-16.44.13:179][ 57]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/mainmenumap061B7433487C9CD35A291F815462CF0E.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/mainmenumap.umap'
+[2024.10.19-16.44.13:192][ 57]LogFileHelpers: Saving map 'mainmenumap' took 0.085
+[2024.10.19-16.44.13:199][ 57]LogFileHelpers: InternalPromptForCheckoutAndSave took 156 ms (total: 876 ms)
+[2024.10.19-16.44.13:200][ 57]AssetCheck: New page: Asset Save: mainmenumap
+[2024.10.19-16.44.13:200][ 57]LogContentValidation: Display: Validating /Script/Engine.World /Game/mainmenumap.mainmenumap
