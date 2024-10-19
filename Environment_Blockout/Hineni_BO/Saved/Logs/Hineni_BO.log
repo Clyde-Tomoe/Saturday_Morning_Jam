@@ -1230,3 +1230,172 @@ LogConfig: CVar [[LogNamedEventFilters:Frame *]] deferred - dummy variable creat
 [2024.10.19-16.38.39:038][526]LogSlate: Took 0.005032 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/Roboto-BoldCondensed.ttf' (158K)
 [2024.10.19-16.38.39:048][526]LogSlateStyle: Warning: Missing Resource from 'CoreStyle' Style: 'Unable to find SlateColor 'Foreground'.'
 [2024.10.19-16.38.39:054][526]LogSlate: Took 0.004914 seconds to synchronously load lazily loaded font '../../../Engine/Content/Editor/Slate/Fonts/FontAwesome.ttf' (139K)
+[2024.10.19-16.39.42:478][827]LogDerivedDataCache: C:/Users/lr104student25/AppData/Local/UnrealEngine/Common/DerivedDataCache: Maintenance finished in +00:00:06.069 and deleted 0 files with total size 0 MiB and 0 empty folders. Scanned 3558 files in 4729 folders with total size 403 MiB.
+[2024.10.19-16.39.48:205][482]BlueprintLog: New page: Compile MainmenuWB
+[2024.10.19-16.39.48:235][482]LogUObjectHash: Compacting FUObjectHashTables data took   0.88ms
+[2024.10.19-16.39.55:968][361]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2024.10.19-16.39.55:981][361]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2024.10.19-16.39.55:981][361]PIE: New page: PIE session: mainmenumap (Oct 19, 2024, 2:39:55 AM)
+[2024.10.19-16.39.55:981][361]LogPlayLevel: Creating play world package: /Game/UEDPIE_0_mainmenumap
+[2024.10.19-16.39.55:982][361]LogPlayLevel: PIE: StaticDuplicateObject took: (0.001141s)
+[2024.10.19-16.39.55:982][361]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/mainmenumap.mainmenumap to /Game/UEDPIE_0_mainmenumap.mainmenumap (0.001185s)
+[2024.10.19-16.39.55:994][361]LogUObjectHash: Compacting FUObjectHashTables data took   0.99ms
+[2024.10.19-16.39.55:996][361]LogWorldSubsystemInput: UEnhancedInputDeveloperSettings::bEnableWorldSubsystem is false, the world subsystem will not be created!
+[2024.10.19-16.39.55:996][361]LogChaos: FPhysicsSolverBase::AsyncDt:-1.000000
+[2024.10.19-16.39.55:996][361]LogAIModule: Creating AISystem for world mainmenumap
+[2024.10.19-16.39.55:997][361]LogPlayLevel: PIE: World Init took: (0.000955s)
+[2024.10.19-16.39.55:997][361]LogAudio: Display: Creating Audio Device:                 Id: 3, Scope: Unique, Realtime: True
+[2024.10.19-16.39.55:997][361]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2024.10.19-16.39.55:997][361]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2024.10.19-16.39.55:997][361]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2024.10.19-16.39.55:997][361]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2024.10.19-16.39.55:997][361]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2024.10.19-16.39.55:997][361]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2024.10.19-16.39.55:997][361]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2024.10.19-16.39.55:997][361]LogAudio: Display: AudioDevice MaxSources: 32
+[2024.10.19-16.39.55:997][361]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2024.10.19-16.39.55:997][361]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2024.10.19-16.39.55:998][361]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2024.10.19-16.39.56:000][361]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2024.10.19-16.39.56:255][361]LogAudioMixer: Display: Using Audio Hardware Device ASUS MX239 (NVIDIA High Definition Audio)
+[2024.10.19-16.39.56:257][361]LogAudioMixer: Display: Initializing Sound Submixes...
+[2024.10.19-16.39.56:257][361]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2024.10.19-16.39.56:257][361]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2024.10.19-16.39.56:259][361]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=3
+[2024.10.19-16.39.56:259][361]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=3
+[2024.10.19-16.39.56:264][361]LogInit: FAudioDevice initialized with ID 3.
+[2024.10.19-16.39.56:264][361]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=3
+[2024.10.19-16.39.56:265][361]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=3
+[2024.10.19-16.39.56:265][361]LogAudio: Display: Audio Device (ID: 3) registered with world 'mainmenumap'.
+[2024.10.19-16.39.56:265][361]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 3
+[2024.10.19-16.39.56:269][361]LogLoad: Game class is 'menugamemode_C'
+[2024.10.19-16.39.56:269][361]LogWorld: Bringing World /Game/UEDPIE_0_mainmenumap.mainmenumap up for play (max tick rate 0) at 2024.10.19-09.39.56
+[2024.10.19-16.39.56:270][361]LogWorld: Bringing up level for play took: 0.000372
+[2024.10.19-16.39.56:272][361]LogOnline: OSS: Created online subsystem instance for: :Context_4
+[2024.10.19-16.39.56:274][361]PIE: Server logged in
+[2024.10.19-16.39.56:275][361]PIE: Play in editor total start time 0.295 seconds.
+[2024.10.19-16.39.57:718][511]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2024.10.19-16.39.57:718][511]LogWorld: BeginTearingDown for /Game/UEDPIE_0_mainmenumap
+[2024.10.19-16.39.57:718][511]LogWorld: UWorld::CleanupWorld for mainmenumap, bSessionEnded=true, bCleanupResources=true
+[2024.10.19-16.39.57:718][511]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.10.19-16.39.57:722][511]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2024.10.19-16.39.57:728][511]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.10.19-16.39.57:744][511]LogAudio: Display: Audio Device unregistered from world 'None'.
+[2024.10.19-16.39.57:744][511]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 3
+[2024.10.19-16.39.57:744][511]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=3
+[2024.10.19-16.39.57:746][511]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=3
+[2024.10.19-16.39.57:757][511]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2024.10.19-16.39.57:759][511]LogUObjectHash: Compacting FUObjectHashTables data took   1.16ms
+[2024.10.19-16.39.57:780][512]LogPlayLevel: Display: Destroying online subsystem :Context_4
+[2024.10.19-16.41.03:302][466]LogContentBrowser: Attempting asset rename: hineni_blockout04 -> hineni_blockout04
+[2024.10.19-16.42.44:028][997]BlueprintLog: New page: Compile MainmenuWB
+[2024.10.19-16.42.44:058][997]LogUObjectHash: Compacting FUObjectHashTables data took   1.71ms
+[2024.10.19-16.42.45:120][ 74]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2024.10.19-16.42.45:209][ 74]LogPackageLocalizationCache: Processed 46 localized package path(s) for 1 prioritized culture(s) in 0.011333 seconds
+[2024.10.19-16.42.45:217][ 74]LogSavePackage: Moving output files for package: /Game/UI/MainmenuWB
+[2024.10.19-16.42.45:221][ 74]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/MainmenuWB68065E9F47D9AE712019698BE2E6BA81.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/UI/MainmenuWB.uasset'
+[2024.10.19-16.42.45:245][ 74]LogFileHelpers: InternalPromptForCheckoutAndSave took 126 ms
+[2024.10.19-16.42.45:249][ 74]AssetCheck: New page: Asset Save: MainmenuWB
+[2024.10.19-16.42.45:249][ 74]LogContentValidation: Display: Validating /Script/UMGEditor.WidgetBlueprint /Game/UI/MainmenuWB.MainmenuWB
+[2024.10.19-16.42.50:802][661]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2024.10.19-16.42.50:813][661]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2024.10.19-16.42.50:813][661]PIE: New page: PIE session: mainmenumap (Oct 19, 2024, 2:42:50 AM)
+[2024.10.19-16.42.50:813][661]LogPlayLevel: Creating play world package: /Game/UEDPIE_0_mainmenumap
+[2024.10.19-16.42.50:814][661]LogPlayLevel: PIE: StaticDuplicateObject took: (0.001190s)
+[2024.10.19-16.42.50:814][661]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/mainmenumap.mainmenumap to /Game/UEDPIE_0_mainmenumap.mainmenumap (0.001237s)
+[2024.10.19-16.42.50:827][661]LogUObjectHash: Compacting FUObjectHashTables data took   1.10ms
+[2024.10.19-16.42.50:829][661]LogWorldSubsystemInput: UEnhancedInputDeveloperSettings::bEnableWorldSubsystem is false, the world subsystem will not be created!
+[2024.10.19-16.42.50:829][661]LogChaos: FPhysicsSolverBase::AsyncDt:-1.000000
+[2024.10.19-16.42.50:830][661]LogAIModule: Creating AISystem for world mainmenumap
+[2024.10.19-16.42.50:830][661]LogPlayLevel: PIE: World Init took: (0.001073s)
+[2024.10.19-16.42.50:830][661]LogAudio: Display: Creating Audio Device:                 Id: 4, Scope: Unique, Realtime: True
+[2024.10.19-16.42.50:830][661]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2024.10.19-16.42.50:830][661]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2024.10.19-16.42.50:830][661]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2024.10.19-16.42.50:830][661]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2024.10.19-16.42.50:830][661]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2024.10.19-16.42.50:830][661]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2024.10.19-16.42.50:830][661]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2024.10.19-16.42.50:830][661]LogAudio: Display: AudioDevice MaxSources: 32
+[2024.10.19-16.42.50:831][661]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2024.10.19-16.42.50:831][661]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2024.10.19-16.42.50:831][661]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2024.10.19-16.42.50:833][661]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2024.10.19-16.42.51:133][661]LogAudioMixer: Display: Using Audio Hardware Device ASUS MX239 (NVIDIA High Definition Audio)
+[2024.10.19-16.42.51:134][661]LogAudioMixer: Display: Initializing Sound Submixes...
+[2024.10.19-16.42.51:134][661]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2024.10.19-16.42.51:134][661]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2024.10.19-16.42.51:135][661]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=4
+[2024.10.19-16.42.51:135][661]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=4
+[2024.10.19-16.42.51:136][661]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=4
+[2024.10.19-16.42.51:136][661]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=4
+[2024.10.19-16.42.51:136][661]LogInit: FAudioDevice initialized with ID 4.
+[2024.10.19-16.42.51:136][661]LogAudio: Display: Audio Device (ID: 4) registered with world 'mainmenumap'.
+[2024.10.19-16.42.51:137][661]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 4
+[2024.10.19-16.42.51:140][661]LogLoad: Game class is 'menugamemode_C'
+[2024.10.19-16.42.51:140][661]LogWorld: Bringing World /Game/UEDPIE_0_mainmenumap.mainmenumap up for play (max tick rate 0) at 2024.10.19-09.42.51
+[2024.10.19-16.42.51:140][661]LogWorld: Bringing up level for play took: 0.000358
+[2024.10.19-16.42.51:142][661]LogOnline: OSS: Created online subsystem instance for: :Context_5
+[2024.10.19-16.42.51:144][661]PIE: Server logged in
+[2024.10.19-16.42.51:145][661]PIE: Play in editor total start time 0.332 seconds.
+[2024.10.19-16.42.51:959][743]LogViewport: Display: Viewport MouseCaptureMode Changed, CapturePermanently_IncludingInitialMouseDown -> CapturePermanently
+[2024.10.19-16.42.51:960][743]LogNet: Browse: /Game/Maps/hineni_blockout04
+[2024.10.19-16.42.51:960][743]LogLoad: LoadMap: /Game/Maps/hineni_blockout04
+[2024.10.19-16.42.51:960][743]LogWorld: BeginTearingDown for /Game/UEDPIE_0_mainmenumap
+[2024.10.19-16.42.51:960][743]LogWorld: UWorld::CleanupWorld for mainmenumap, bSessionEnded=true, bCleanupResources=true
+[2024.10.19-16.42.51:961][743]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.10.19-16.42.51:998][743]LogAudio: Display: Audio Device unregistered from world 'None'.
+[2024.10.19-16.42.52:000][743]LogUObjectHash: Compacting FUObjectHashTables data took   0.98ms
+[2024.10.19-16.42.52:417][743]LogAudio: Display: Audio Device (ID: 4) registered with world 'hineni_blockout04'.
+[2024.10.19-16.42.52:417][743]LogWorldSubsystemInput: UEnhancedInputDeveloperSettings::bEnableWorldSubsystem is false, the world subsystem will not be created!
+[2024.10.19-16.42.52:417][743]LogChaos: FPhysicsSolverBase::AsyncDt:-1.000000
+[2024.10.19-16.42.52:418][743]LogAIModule: Creating AISystem for world hineni_blockout04
+[2024.10.19-16.42.52:419][743]LogPlayLevel: PIE: World Init took: (0.001394s)
+[2024.10.19-16.42.52:419][743]LogLoad: Game class is 'BP_ThirdPersonGameMode_C'
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/_GENERATED/Emily/CubeGridToolOutput_2AEDA6C5.CubeGridToolOutput_2AEDA6C5 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Art/Rocks_Temp_pPlatonic1.Rocks_Temp_pPlatonic1 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Art/Tools_pCube1.Tools_pCube1 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Art/Tools_pCube3.Tools_pCube3 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Art/Tree.Tree being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/Emily/CubeGridToolOutput_4EE1B37F.CubeGridToolOutput_4EE1B37F being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/Emily/CubeGridToolOutput_52E37760.CubeGridToolOutput_52E37760 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/Emily/CubeGridToolOutput_60C88DFE.CubeGridToolOutput_60C88DFE being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/Emily/CubeGridToolOutput_62D37EDA.CubeGridToolOutput_62D37EDA being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/Emily/CubeGridToolOutput_9E735248.CubeGridToolOutput_9E735248 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/Emily/CubeGridToolOutput_CF7DEFD0.CubeGridToolOutput_CF7DEFD0 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/Emily/CubeGridToolOutput_DA25F671.CubeGridToolOutput_DA25F671 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/Emily/CubeGridToolOutput_DDF107A9.CubeGridToolOutput_DDF107A9 being ready before playing
+[2024.10.19-16.42.52:438][743]LogStaticMesh: Display: Waiting on static mesh StaticMesh /Game/Maps/_GENERATED/lr104student24/CubeGridToolOutput_23B9FAA7.CubeGridToolOutput_23B9FAA7 being ready before playing
+[2024.10.19-16.42.52:886][743]LogWorld: Bringing World /Game/Maps/UEDPIE_0_hineni_blockout04.hineni_blockout04 up for play (max tick rate 0) at 2024.10.19-09.42.52
+[2024.10.19-16.42.52:887][743]LogWorld: Bringing up level for play took: 0.448154
+[2024.10.19-16.42.52:892][743]LogLoad: Took 0.931819 seconds to LoadMap(/Game/Maps/hineni_blockout04)
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: ================================================
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: === FShaderJobCache stats ===
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: Total job queries 8, among them cache hits 0 (0.00%)
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: Tracking 8 distinct input hashes that result in 8 distinct outputs (100.00%)
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: RAM used: 175.09 KiB of 6.40 GiB budget. Usage: 0.00%
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: === Shader Compilation stats ===
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: Shaders Compiled: 0
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: Jobs assigned 0, completed 0 (0%)
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: Time at least one job was in flight (either pending or executed): 0.00 s
+[2024.10.19-16.42.53:296][744]LogShaderCompilers: Display: ================================================
+[2024.10.19-16.42.55:929][998]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2024.10.19-16.42.55:929][998]LogWorld: BeginTearingDown for /Game/Maps/UEDPIE_0_hineni_blockout04
+[2024.10.19-16.42.55:929][998]LogWorld: UWorld::CleanupWorld for hineni_blockout04, bSessionEnded=true, bCleanupResources=true
+[2024.10.19-16.42.55:949][998]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.10.19-16.42.55:955][998]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2024.10.19-16.42.55:961][998]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.10.19-16.42.55:977][998]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2024.10.19-16.42.55:977][998]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 4
+[2024.10.19-16.42.55:977][998]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=4
+[2024.10.19-16.42.55:979][998]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=4
+[2024.10.19-16.42.56:034][998]LogUObjectHash: Compacting FUObjectHashTables data took   1.52ms
+[2024.10.19-16.42.56:074][999]LogPlayLevel: Display: Destroying online subsystem :Context_5
+[2024.10.19-16.42.57:032][109]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2024.10.19-16.42.57:142][109]LogUObjectHash: Compacting FUObjectHashTables data took   0.90ms
+[2024.10.19-16.42.57:149][109]LogSavePackage: Moving output files for package: /Game/mainmenumap
+[2024.10.19-16.42.57:152][109]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/mainmenumap02D5CA874F9D88E3A9E6BD9D5D98A52B.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Content/mainmenumap.umap'
+[2024.10.19-16.42.57:167][109]LogFileHelpers: Saving map 'mainmenumap' took 0.072
+[2024.10.19-16.42.57:174][109]LogFileHelpers: InternalPromptForCheckoutAndSave took 141 ms (total: 267 ms)
+[2024.10.19-16.42.57:175][109]AssetCheck: New page: Asset Save: mainmenumap
+[2024.10.19-16.42.57:175][109]LogContentValidation: Display: Validating /Script/Engine.World /Game/mainmenumap.mainmenumap
