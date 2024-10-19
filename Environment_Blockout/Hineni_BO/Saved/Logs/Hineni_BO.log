@@ -1476,3 +1476,75 @@ LogConfig: Set CVar [[r.Shadow.DetectVertexShaderLayerAtRuntime:1]]
 [2024.10.19-15.16.00:437][790]LogInterchangeEngine: [Success] Import Done
 [2024.10.19-15.16.00:526][791]LogTexture: Display: Building textures: /Game/UI/Hiñenui.Hiñenui (BGRA8, 4812x3483 x1x1x1) (Required Memory Estimate: 490.2314 MB), EncodeSpeed: Fast
 [2024.10.19-15.16.00:528][791]LogInterchangeEngine: [Success] Import Done
+[2024.10.19-15.23.25:783][352]LogUObjectHash: Compacting FUObjectHashTables data took   1.88ms
+[2024.10.19-15.23.25:785][352]LogFileHelpers: Editor autosave (incl. external actors) for '/Game/ThirdPerson/Maps/ThirdPersonMap' took 0.036
+[2024.10.19-15.23.25:786][352]OBJ SavePackage: Generating thumbnails for [2] asset(s) in package [/Game/UI/MainmenuWB] ([2] browsable assets)...
+[2024.10.19-15.23.25:793][352]OBJ SavePackage:     Rendered thumbnail for [WidgetBlueprint /Game/UI/MainmenuWB.MainmenuWB]
+[2024.10.19-15.23.25:793][352]OBJ SavePackage: Finished generating thumbnails for package [/Game/UI/MainmenuWB]
+[2024.10.19-15.23.25:798][352]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/UI/MainmenuWB_Auto1
+[2024.10.19-15.23.25:798][352]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/MainmenuWB_Auto1DC7879CB4C20B72B12E237B05ADB2FF1.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Autosaves/Game/UI/MainmenuWB_Auto1.uasset'
+[2024.10.19-15.23.25:807][352]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/UI/Hiñenui] ([1] browsable assets)...
+[2024.10.19-15.23.25:810][352]OBJ SavePackage:     Rendered thumbnail for [Texture2D /Game/UI/Hiñenui.Hiñenui]
+[2024.10.19-15.23.25:810][352]OBJ SavePackage: Finished generating thumbnails for package [/Game/UI/Hiñenui]
+[2024.10.19-15.23.25:814][352]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/UI/Hiñenui_Auto1
+[2024.10.19-15.23.25:814][352]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Hiñenui_Auto16A7318694EC4BAA97AC41F9D90297AA7.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Autosaves/Game/UI/Hiñenui_Auto1.uasset'
+[2024.10.19-15.23.25:821][352]LogFileHelpers: Auto-saving content packages took 0.037
+[2024.10.19-16.08.23:772][540]LogViewport: Scene viewport resized to 874x580, mode Windowed.
+[2024.10.19-16.08.25:689][598]LogViewport: Scene viewport resized to 1317x892, mode Windowed.
+[2024.10.19-16.08.44:052][350]LogEditorTransaction: Undo Drag and Drop Widget
+[2024.10.19-16.09.22:256][627]LogEditorTransaction: Undo Drag and Drop Widget
+[2024.10.19-16.10.16:531][807]LogUObjectHash: Compacting FUObjectHashTables data took   1.18ms
+[2024.10.19-16.10.16:532][807]LogFileHelpers: Editor autosave (incl. external actors) for '/Game/ThirdPerson/Maps/ThirdPersonMap' took 0.015
+[2024.10.19-16.10.16:533][807]OBJ SavePackage: Generating thumbnails for [2] asset(s) in package [/Game/UI/MainmenuWB] ([2] browsable assets)...
+[2024.10.19-16.10.16:535][807]OBJ SavePackage:     Rendered thumbnail for [WidgetBlueprint /Game/UI/MainmenuWB.MainmenuWB]
+[2024.10.19-16.10.16:535][807]OBJ SavePackage: Finished generating thumbnails for package [/Game/UI/MainmenuWB]
+[2024.10.19-16.10.16:538][807]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/UI/MainmenuWB_Auto2
+[2024.10.19-16.10.16:538][807]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/MainmenuWB_Auto27A5DDDF44ECE8D537BBDA9884AEF3C14.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Autosaves/Game/UI/MainmenuWB_Auto2.uasset'
+[2024.10.19-16.10.16:542][807]OBJ SavePackage: Generating thumbnails for [0] asset(s) in package [/Game/UI/Hiñenui] ([1] browsable assets)...
+[2024.10.19-16.10.16:542][807]OBJ SavePackage: Finished generating thumbnails for package [/Game/UI/Hiñenui]
+[2024.10.19-16.10.16:545][807]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/UI/Hiñenui_Auto2
+[2024.10.19-16.10.16:545][807]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Hiñenui_Auto2ADE053984D22027709A3D59F25A31365.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Autosaves/Game/UI/Hiñenui_Auto2.uasset'
+[2024.10.19-16.10.16:548][807]LogFileHelpers: Auto-saving content packages took 0.016
+[2024.10.19-16.13.13:776][690]LogInterchangeEngine: [Pending] Importing
+[2024.10.19-16.13.13:776][690]LogInterchangeEngine: Display: Interchange start importing source [C:/Users/lr104student25/Downloads/Statuimeow.png]
+[2024.10.19-16.13.13:894][691]LogInterchangeEngine: [Pending] Importing
+[2024.10.19-16.13.13:941][691]LogCore: PNG has complex alpha channel, will not fill RGB in transparent background, due to setting PNGInfill == OnlyOnBinaryTransparency
+[2024.10.19-16.13.13:977][692]LogTexture: Display: Building textures: /Game/UI/Statuimeow.Statuimeow (BGRA8, 4812x3483 x1x1x1) (Required Memory Estimate: 490.2314 MB), EncodeSpeed: Fast
+[2024.10.19-16.13.13:991][692]LogInterchangeEngine: [Success] Import Done
+[2024.10.19-16.13.14:087][693]LogInterchangeEngine: [Success] Import Done
+[2024.10.19-16.13.38:746][923]LogInterchangeEngine: [Pending] Importing
+[2024.10.19-16.13.38:746][923]LogInterchangeEngine: Display: Interchange start importing source [C:/Users/lr104student25/Downloads/Startpishedneow.png]
+[2024.10.19-16.13.38:795][924]LogInterchangeEngine: [Pending] Importing
+[2024.10.19-16.13.38:906][924]LogCore: PNG has complex alpha channel, will not fill RGB in transparent background, due to setting PNGInfill == OnlyOnBinaryTransparency
+[2024.10.19-16.13.39:092][924]LogInterchangeEngine: [Success] Import Done
+[2024.10.19-16.13.39:111][924]LogTexture: Display: Building textures: /Game/UI/Startpishedneow.Startpishedneow (BGRA8, 4812x3483 x1x1x1) (Required Memory Estimate: 490.2314 MB), EncodeSpeed: Fast
+[2024.10.19-16.13.39:193][925]LogInterchangeEngine: [Success] Import Done
+[2024.10.19-16.14.58:358][565]LogDerivedDataCache: C:/Users/lr104student25/AppData/Local/UnrealEngine/Common/DerivedDataCache: Maintenance finished in +00:00:05.063 and deleted 0 files with total size 0 MiB and 0 empty folders. Scanned 3292 files in 4297 folders with total size 391 MiB.
+[2024.10.19-16.15.20:963][204]LogSlate: Took 0.000349 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/Roboto-Light.ttf' (167K)
+[2024.10.19-16.15.40:981][634]LogAssetEditorSubsystem: Opening Asset editor for Font /Engine/EngineFonts/DroidSansMono.DroidSansMono
+[2024.10.19-16.15.41:107][634]LogViewport: Scene viewport resized to 1240x100, mode Windowed.
+[2024.10.19-16.15.44:301][956]LogSlate: Window 'DroidSansMono' being destroyed
+[2024.10.19-16.15.44:311][956]LogSlate: Window 'DroidSansMono' being destroyed
+[2024.10.19-16.15.44:320][956]LogWorld: UWorld::CleanupWorld for World_2, bSessionEnded=true, bCleanupResources=true
+[2024.10.19-16.15.44:320][956]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.10.19-16.15.44:331][956]LogWorld: UWorld::CleanupWorld for World_1, bSessionEnded=true, bCleanupResources=true
+[2024.10.19-16.15.44:331][956]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.10.19-16.20.16:958][164]LogUObjectHash: Compacting FUObjectHashTables data took   1.81ms
+[2024.10.19-16.20.16:963][164]LogFileHelpers: Editor autosave (incl. external actors) for '/Game/ThirdPerson/Maps/ThirdPersonMap' took 0.031
+[2024.10.19-16.20.16:963][164]OBJ SavePackage: Generating thumbnails for [2] asset(s) in package [/Game/UI/MainmenuWB] ([2] browsable assets)...
+[2024.10.19-16.20.16:969][164]OBJ SavePackage:     Rendered thumbnail for [WidgetBlueprint /Game/UI/MainmenuWB.MainmenuWB]
+[2024.10.19-16.20.16:969][164]OBJ SavePackage: Finished generating thumbnails for package [/Game/UI/MainmenuWB]
+[2024.10.19-16.20.16:973][164]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/UI/MainmenuWB_Auto3
+[2024.10.19-16.20.16:973][164]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/MainmenuWB_Auto312CFC5B54E919DBE05B92E9253C9D5C9.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Autosaves/Game/UI/MainmenuWB_Auto3.uasset'
+[2024.10.19-16.20.16:978][164]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/UI/Statuimeow] ([1] browsable assets)...
+[2024.10.19-16.20.16:985][164]OBJ SavePackage:     Rendered thumbnail for [Texture2D /Game/UI/Statuimeow.Statuimeow]
+[2024.10.19-16.20.16:985][164]OBJ SavePackage: Finished generating thumbnails for package [/Game/UI/Statuimeow]
+[2024.10.19-16.20.17:063][164]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/UI/Statuimeow_Auto3
+[2024.10.19-16.20.17:064][164]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Statuimeow_Auto32A229AE64F93FA5A8688E1918D56EACF.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Autosaves/Game/UI/Statuimeow_Auto3.uasset'
+[2024.10.19-16.20.17:068][164]OBJ SavePackage: Generating thumbnails for [1] asset(s) in package [/Game/UI/Startpishedneow] ([1] browsable assets)...
+[2024.10.19-16.20.17:072][164]OBJ SavePackage:     Rendered thumbnail for [Texture2D /Game/UI/Startpishedneow.Startpishedneow]
+[2024.10.19-16.20.17:072][164]OBJ SavePackage: Finished generating thumbnails for package [/Game/UI/Startpishedneow]
+[2024.10.19-16.20.17:155][164]LogSavePackage: Moving output files for package: /Temp/Autosaves/Game/UI/Startpishedneow_Auto3
+[2024.10.19-16.20.17:155][164]LogSavePackage: Moving '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Startpishedneow_Auto3103898B14F6F5A8F27B1889EA77E556F.tmp' to '../../../../../../Users/lr104student25/Documents/GitHub/Saturday_Morning_Jam/Environment_Blockout/Hineni_BO/Saved/Autosaves/Game/UI/Startpishedneow_Auto3.uasset'
+[2024.10.19-16.20.17:159][164]LogFileHelpers: Auto-saving content packages took 0.196
+[2024.10.19-16.35.34:118][915]LogAudioMixer: Display: Audio Buffer Underrun (starvation) detected. InstanceID=1
