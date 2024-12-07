@@ -71,3 +71,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 Environment_Blockout/Hineni_BO/Saved/Logs/Hineni_BO.log
+*.log
+Environment_Blockout/Hineni_BO/Saved/AutoScreenshot.png
